@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) 2024 Huawei Technologies Co., Ltd. All rights reserved.
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -17,8 +17,8 @@ import jakarta.validation.Valid;
 /**
  * 表示评估注解验证数据接口集。
  *
- * @author 吕博文
- * @since 2024-08-15
+ * @author 阮睿
+ * @since 2025-07-18
  */
 @Component
 @Validated

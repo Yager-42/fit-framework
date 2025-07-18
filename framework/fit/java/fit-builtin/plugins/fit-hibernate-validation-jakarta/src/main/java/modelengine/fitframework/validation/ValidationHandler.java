@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) 2024 Huawei Technologies Co., Ltd. All rights reserved.
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -34,8 +34,8 @@ import jakarta.validation.executable.ExecutableValidator;
  * 当调用的类或方法参数包含 {@link Validated} 注解时，会对该方法进行校验处理。
  * </p>
  *
- * @author 易文渊
- * @since 2024-09-27
+ * @author 阮睿
+ * @since 2025-07-18
  */
 @Aspect(scope = Scope.GLOBAL)
 @Component

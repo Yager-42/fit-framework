@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) 2024 Huawei Technologies Co., Ltd. All rights reserved.
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -32,8 +32,8 @@ import jakarta.validation.ConstraintViolationException;
 /**
  * {@link ValidationHandler} 的单元测试。
  *
- * @author 易文渊
- * @since 2024-09-27
+ * @author 阮睿
+ * @since 2025-07-18
  */
 @DisplayName("测试注解校验功能")
 @FitTestWithJunit(includeClasses = {

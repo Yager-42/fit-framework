@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) 2024 Huawei Technologies Co., Ltd. All rights reserved.
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -17,8 +17,8 @@ import javax.validation.constraints.Min;
 /**
  * 表示测试用分组校验服务。
  *
- * @author 易文渊
- * @since 2024-09-27
+ * @author 阮睿
+ * @since 2025-07-18
  */
 @Component
 public class GroupValidateService {
