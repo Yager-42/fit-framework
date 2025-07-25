@@ -55,17 +55,15 @@ public class ValidationHandler implements AutoCloseable {
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
         // 检查方法参数是否包含被 jakarta.validation.Constraint 标注的校验注解
-        if (hasJakartaConstraintAnnotations(joinPoint.getMethod().getParameters())) {
-            return;
-        }
-
-        ExecutableValidator execVal = this.validator.forExecutables();
-        Set<ConstraintViolation<Object>> result = execVal.validateParameters(joinPoint.getTarget(),
-                joinPoint.getMethod(),
-                joinPoint.getArgs(),
-                validated.value());
-        if (!result.isEmpty()) {
-            throw new ConstraintViolationException(result);
+        if (!hasJakartaConstraintAnnotations(joinPoint.getMethod().getParameters())) {
+            ExecutableValidator execVal = this.validator.forExecutables();
+            Set<ConstraintViolation<Object>> result = execVal.validateParameters(joinPoint.getTarget(),
+                    joinPoint.getMethod(),
+                    joinPoint.getArgs(),
+                    validated.value());
+            if (!result.isEmpty()) {
+                throw new ConstraintViolationException(result);
+            }
         }
     }
 
