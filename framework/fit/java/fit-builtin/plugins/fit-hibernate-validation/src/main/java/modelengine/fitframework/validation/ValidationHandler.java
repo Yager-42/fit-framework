@@ -17,7 +17,10 @@ import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -55,7 +58,7 @@ public class ValidationHandler implements AutoCloseable {
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
         // 检查方法参数是否包含被 jakarta.validation.Constraint 标注的校验注解
-        if (!hasJakartaConstraintAnnotations(joinPoint.getMethod().getParameters())) {
+        if (hasJavaxConstraintAnnotations(joinPoint.getMethod().getParameters())) {
             ExecutableValidator execVal = this.validator.forExecutables();
             Set<ConstraintViolation<Object>> result = execVal.validateParameters(joinPoint.getTarget(),
                     joinPoint.getMethod(),
@@ -74,30 +77,65 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 检查方法参数是否包含被 jakarta.validation.Constraint 标注的校验注解
+     * 检查方法参数是否包含 javax.validation 校验注解
      *
      * @param parameters 方法参数数组
-     * @return 如果包含被 jakarta.validation.Constraint 标注的校验注解则返回 true，否则返回 false
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
      */
-    private boolean hasJakartaConstraintAnnotations(Parameter[] parameters) {
+    private boolean hasJavaxConstraintAnnotations(Parameter[] parameters) {
         return Arrays.stream(parameters)
-                .flatMap(parameter -> Arrays.stream(parameter.getAnnotations()))
-                .anyMatch(this::isJakartaConstraintAnnotation);
+                .anyMatch(this::hasConstraintAnnotationsInParameter);
     }
 
     /**
-     * 检查注解是否被 jakarta.validation.Constraint 标注
+     * 检查参数及其泛型类型参数是否包含校验注解
+     * @param parameter 方法参数数组
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
+     */
+    private boolean hasConstraintAnnotationsInParameter(Parameter parameter) {
+        return hasConstraintAnnotationsInType(parameter.getAnnotatedType());
+    }
+
+    /**
+     * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解
+     * @param annotatedType  参数注解类型
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
+     */
+    private boolean hasConstraintAnnotationsInType(AnnotatedType annotatedType) {
+        // 检查当前类型上的注解
+        if (annotatedType.getAnnotations().length > 0) {
+            return Arrays.stream(annotatedType.getAnnotations()).anyMatch(this::isJavaxConstraintAnnotation);
+        }
+        
+        // 如果是参数化类型，递归检查类型参数
+        if (annotatedType instanceof AnnotatedParameterizedType) {
+            AnnotatedParameterizedType parameterizedType = (AnnotatedParameterizedType) annotatedType;
+            return Arrays.stream(parameterizedType.getAnnotatedActualTypeArguments())
+                    .anyMatch(this::hasConstraintAnnotationsInType);
+        }
+        
+        return false;
+    }
+
+    /**
+     * 检查注解是否属于 javax.validation 注解
      *
      * @param annotation 要检查的注解
-     * @return 如果被 jakarta.validation.Constraint 标注则返回 true，否则返回 false
+     * @return 如果属于 javax.validation 注解则返回 true，否则返回 false
      */
-    private boolean isJakartaConstraintAnnotation(Annotation annotation) {
+    private boolean isJavaxConstraintAnnotation(Annotation annotation) {
+        // @Valid 注解检查
+        if(annotation.annotationType().getName().equals("javax.validation.Valid")){
+            return true;
+        }
+        // javax.validation.constraints， org.hibernate.validator.constraints 包下的注解检查
+        // 通过 Constraint 注解检查当前注解是否为校验注解
         Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
         return Arrays.stream(metaAnnotations)
                 .anyMatch(metaAnnotation -> {
                     String packageName = metaAnnotation.annotationType().getPackage().getName();
                     String className = metaAnnotation.annotationType().getSimpleName();
-                    return "jakarta.validation".equals(packageName) && "Constraint".equals(className);
+                    return "javax.validation".equals(packageName) && "Constraint".equals(className);
                 });
     }
 }
