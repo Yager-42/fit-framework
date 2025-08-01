@@ -22,17 +22,21 @@ public class DefualtLocaleResolver implements LocaleResolver{
     private int cookieMaxAge = DEFAULT_COOKIE_MAX_AGE;
     private String cookieDomain = DEFAULT_COOKIE_DOMAIN;
     private String cookiePath = DEFAULT_COOKIE_PATH;
-    private Locale defaultLocale;
+    private Locale defaultLocale = Locale.getDefault();
 
     @Override
     public Locale resolveLocale(HttpClassicServerRequest request) {
         // 先解析 Cookie，如果没有则使用 Accept-Language 头
         String newLocale = request.cookies().get(this.cookieName).map(Cookie::value).orElse(null);
-        if(newLocale != null){
+        if (newLocale != null) {
             return Locale.forLanguageTag(newLocale);
         }
-
-        String acceptLanguage = request.headers().require("Accept-Language");
+        String acceptLanguage;
+        try {
+            acceptLanguage = request.headers().require("Accept-Language");
+        } catch (Exception e) {
+            acceptLanguage = null;
+        }
         if (acceptLanguage != null && !acceptLanguage.trim().isEmpty()) {
             return Locale.forLanguageTag(acceptLanguage);
         }

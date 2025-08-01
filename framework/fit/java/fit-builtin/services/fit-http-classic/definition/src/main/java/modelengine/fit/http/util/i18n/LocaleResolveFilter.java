@@ -2,6 +2,8 @@ package modelengine.fit.http.util.i18n;
 
 import modelengine.fit.http.server.*;
 import modelengine.fitframework.annotation.Scope;
+import modelengine.fitframework.util.LocaleContext;
+import modelengine.fitframework.util.LocaleContextHolder;
 
 import java.util.List;
 import java.util.Locale;
@@ -12,7 +14,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
 
     private List<String> matchPatterns = List.of("/**");
 
-    private List<String> mismatchPatterns = null;
+    private List<String> mismatchPatterns = List.of();
 
     private Scope scope = Scope.GLOBAL;
 

@@ -4,7 +4,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-package modelengine.fit.http.util.i18n;
+package modelengine.fitframework.util;
 
 import java.util.Locale;
 
