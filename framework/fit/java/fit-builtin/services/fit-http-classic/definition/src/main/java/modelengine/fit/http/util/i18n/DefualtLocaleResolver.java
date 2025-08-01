@@ -3,6 +3,7 @@
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+
 package modelengine.fit.http.util.i18n;
 
 import modelengine.fit.http.Cookie;
@@ -11,7 +12,12 @@ import modelengine.fit.http.server.HttpClassicServerResponse;
 
 import java.util.Locale;
 
-
+/**
+ * 默认地区解析器。
+ *
+ * @author 阮睿
+ * @since 2025-08-01
+ */
 public class DefualtLocaleResolver implements LocaleResolver{
 
     public static final String DEFAULT_COOKIE_NAME = "locale";

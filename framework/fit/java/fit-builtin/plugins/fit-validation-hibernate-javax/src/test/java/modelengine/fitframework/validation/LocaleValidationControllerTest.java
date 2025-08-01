@@ -1,3 +1,9 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
+ *  This file is a part of the ModelEngine Project.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 package modelengine.fitframework.validation;
 
 import modelengine.fit.http.client.HttpClassicClientResponse;
@@ -23,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@link LocaleValidationController} 的测试集。
  *
  * @author 阮睿
- * @since 2025-07-18
+ * @since 2025-08-01
  */
 @MvcTest(classes = {LocaleValidationController.class})
 @DisplayName("测试地区化验证消息功能")

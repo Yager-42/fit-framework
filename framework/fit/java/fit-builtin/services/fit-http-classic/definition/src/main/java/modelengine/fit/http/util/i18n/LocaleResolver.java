@@ -13,8 +13,8 @@ import java.util.Locale;
 /**
  * 地区解析器接口，用于从HTTP请求中解析用户的地区设置
  *
- * @author fit-framework
- * @since 2025-01-01
+ * @author 阮睿
+ * @since 2025-08-01
  */
 public interface LocaleResolver {
 

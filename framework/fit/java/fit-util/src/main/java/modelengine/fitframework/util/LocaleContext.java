@@ -8,6 +8,12 @@ package modelengine.fitframework.util;
 
 import java.util.Locale;
 
+/**
+ * 地区上下文。
+ *
+ * @author 阮睿
+ * @since 2025-08-01
+ */
 public class LocaleContext {
     private final Locale locale;
 
