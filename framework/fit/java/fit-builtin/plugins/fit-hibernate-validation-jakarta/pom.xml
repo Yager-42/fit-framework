@@ -87,7 +87,7 @@
                 <artifactId>fit-build-maven-plugin</artifactId>
                 <configuration>
                     <category>system</category>
-                    <level>1</level>
+                    <level>4</level>
                 </configuration>
             </plugin>
             <plugin>
