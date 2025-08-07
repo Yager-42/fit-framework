@@ -28,19 +28,4 @@ public class Company {
     public Company(List<Employee> employees) {
         this.employees = employees;
     }
-    
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-    
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-    
-    @Override
-    public String toString() {
-        return "Company{" +
-                "employees=" + employees +
-                '}';
-    }
 }

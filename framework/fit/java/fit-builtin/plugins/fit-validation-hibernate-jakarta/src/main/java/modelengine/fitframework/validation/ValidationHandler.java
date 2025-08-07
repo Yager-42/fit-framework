@@ -33,7 +33,7 @@ import jakarta.validation.executable.ExecutableValidator;
 /**
  * 校验入口类。
  * <p>
- * 当调用的类或方法参数包含 {@link Validated} 注解时，会对该方法进行校验处理。
+ * 当调用的类包含 {@link Validated} 注解时，会对该类公共方法参数进行校验处理。
  * </p>
  *
  * @author 阮睿
@@ -54,6 +54,12 @@ public class ValidationHandler implements AutoCloseable {
         this.validator = validatorFactory.getValidator();
     }
 
+    /**
+     * 方法参数校验处理
+     *
+     * @param joinPoint 被拦截的连接点 {@link JoinPoint}
+     * @param validated 连接点上携带的校验注解 {@link Validated}
+     */
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
         // 检查方法参数是否包含被 javax.validation.Constraint 标注的校验注解
@@ -78,7 +84,7 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 检查方法参数是否包含 jakarta.validation 校验注解
      *
-     * @param parameters 方法参数数组
+     * @param parameters 方法参数数组 {@link Parameter[]}
      * @return 如果包含 jakarta.validation 标注的校验注解则返回 true，否则返回 false
      */
     private boolean hasJakartaConstraintAnnotations(Parameter[] parameters) {
@@ -88,7 +94,7 @@ public class ValidationHandler implements AutoCloseable {
 
     /**
      * 检查参数及其泛型类型参数是否包含校验注解
-     * @param parameter 方法参数
+     * @param parameter 方法参数 {@link Parameter}
      * @return 如果包含 jakarta.validation 标注的校验注解则返回 true，否则返回 false
      */
     private boolean hasConstraintAnnotationsInParameter(Parameter parameter) {
@@ -97,7 +103,7 @@ public class ValidationHandler implements AutoCloseable {
 
     /**
      * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解
-     * @param annotatedType  参数注解类型
+     * @param annotatedType  参数注解类型 {@link AnnotatedType}
      * @return 如果包含 jakarta.validation 标注的校验注解则返回 true，否则返回 false
      */
     private boolean hasConstraintAnnotationsInType(AnnotatedType annotatedType) {
@@ -119,7 +125,7 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 检查注解是否属于 jakarta.validation 注解
      *
-     * @param annotation 要检查的注解
+     * @param annotation 要检查的注解 {@link Annotation}
      * @return 如果属于 jakarta.validation 注解则返回 true，否则返回 false
      */
     private boolean isJakartaConstraintAnnotation(Annotation annotation) {
