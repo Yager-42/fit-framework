@@ -9,16 +9,16 @@
         <version>3.6.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fit-hibernate-validation</artifactId>
+    <artifactId>fit-validation-hibernate-jakarta</artifactId>
 
-    <name>FIT Hibernate Validation</name>
+    <name>FIT Hibernate Validation Jakarta</name>
     <description>FIT Framework Hibernate Validation module provides Validation for args.
     </description>
     <url>https://github.com/ModelEngine-Group/fit-framework</url>
 
     <properties>
         <!-- Third-party versions -->
-        <hibernate.version>6.2.5.Final</hibernate.version>
+        <hibernate.version>9.0.1.Final</hibernate.version>
     </properties>
 
 
