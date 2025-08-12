@@ -6,11 +6,10 @@
 
 package modelengine.fitframework.validation.data;
 
-
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * 公司实体类。
@@ -22,9 +21,9 @@ public class Company {
     @NotNull
     @Valid
     private List<Employee> employees;
-    
+
     public Company() {}
-    
+
     public Company(List<Employee> employees) {
         this.employees = employees;
     }

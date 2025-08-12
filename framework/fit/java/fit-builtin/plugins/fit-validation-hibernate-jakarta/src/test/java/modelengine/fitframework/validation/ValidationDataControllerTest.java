@@ -6,6 +6,8 @@
 
 package modelengine.fitframework.validation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import modelengine.fit.http.client.HttpClassicClientResponse;
 import modelengine.fitframework.annotation.Fit;
 import modelengine.fitframework.test.annotation.MvcTest;
@@ -15,14 +17,13 @@ import modelengine.fitframework.test.domain.mvc.request.MockRequestBuilder;
 import modelengine.fitframework.validation.data.Company;
 import modelengine.fitframework.validation.data.Employee;
 import modelengine.fitframework.validation.data.ValidationDataController;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * {@link ValidationDataController} 的测试集。
@@ -50,8 +51,9 @@ public class ValidationDataControllerTest {
     void shouldOKWhenCreateValidCompany() {
         Employee validEmployee = new Employee("John", 25);
         Company validCompany = new Company(Collections.singletonList(validEmployee));
-        MockRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/validation/company/default").jsonEntity(validCompany).responseType(Void.class);
+        MockRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/validation/company/default")
+                .jsonEntity(validCompany)
+                .responseType(Void.class);
         this.response = this.mockMvc.perform(requestBuilder);
         assertThat(this.response.statusCode()).isEqualTo(200);
     }
@@ -60,8 +62,9 @@ public class ValidationDataControllerTest {
     @DisplayName("不合法 Company 对象校验")
     void shouldFailedWhenCreateInvalidCompany() {
         Company invalidCompany = new Company(null);
-        MockRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/validation/company/default").jsonEntity(invalidCompany).responseType(Void.class);
+        MockRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/validation/company/default")
+                .jsonEntity(invalidCompany)
+                .responseType(Void.class);
         this.response = this.mockMvc.perform(requestBuilder);
         assertThat(this.response.statusCode()).isEqualTo(500);
     }
@@ -71,8 +74,9 @@ public class ValidationDataControllerTest {
     void shouldOKWhenCreateValidCompanyWithGroup() {
         Employee validEmployee = new Employee("Jane", 30);
         Company validCompany = new Company(Collections.singletonList(validEmployee));
-        MockRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/validation/company/companyGroup").jsonEntity(validCompany).responseType(Void.class);
+        MockRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/validation/company/companyGroup")
+                .jsonEntity(validCompany)
+                .responseType(Void.class);
         this.response = this.mockMvc.perform(requestBuilder);
         assertThat(this.response.statusCode()).isEqualTo(200);
     }
@@ -82,8 +86,9 @@ public class ValidationDataControllerTest {
     void shouldFailedWhenCreateInvalidCompanyWithGroup() {
         Employee invalidEmployee = new Employee("", 15);
         Company invalidCompany = new Company(Collections.singletonList(invalidEmployee));
-        MockRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/validation/company/companyGroup").jsonEntity(invalidCompany).responseType(Void.class);
+        MockRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/validation/company/companyGroup")
+                .jsonEntity(invalidCompany)
+                .responseType(Void.class);
         this.response = this.mockMvc.perform(requestBuilder);
         assertThat(this.response.statusCode()).isEqualTo(500);
     }

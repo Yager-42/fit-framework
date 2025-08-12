@@ -6,13 +6,12 @@
 
 package modelengine.fitframework.validation.data;
 
-import modelengine.fitframework.annotation.Component;
-import modelengine.fitframework.log.Logger;
-import modelengine.fitframework.validation.Validated;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import modelengine.fitframework.annotation.Component;
+import modelengine.fitframework.log.Logger;
+import modelengine.fitframework.validation.Validated;
 
 /**
  * 表示测试用分组校验服务。
@@ -28,8 +27,10 @@ public class GroupValidateService {
     @Component
     @Validated(ValidationTestData.StudentGroup.class)
     public static class StudentValidateService {
-        public void validateStudentAge(@Min(value = 7, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class)
-                                       @Max(value = 20, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class) int age) {
+        public void validateStudentAge(
+                @Min(value = 7, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class) @Max(
+                        value = 20, message = "范围要在7~20之内",
+                        groups = ValidationTestData.StudentGroup.class) int age) {
             LOG.debug("Validating student age: {}", age);
         }
     }
@@ -38,8 +39,10 @@ public class GroupValidateService {
     @Component
     @Validated(ValidationTestData.TeacherGroup.class)
     public static class TeacherValidateService {
-        public void validateTeacherAge(@Min(value = 22, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class)
-                                       @Max(value = 65, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class) int age) {
+        public void validateTeacherAge(
+                @Min(value = 22, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class) @Max(
+                        value = 65, message = "范围要在22~65之内",
+                        groups = ValidationTestData.TeacherGroup.class) int age) {
             LOG.debug("Validating teacher age: {}", age);
         }
     }

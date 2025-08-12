@@ -6,13 +6,12 @@
 
 package modelengine.fitframework.validation.data;
 
+import jakarta.validation.Valid;
 import modelengine.fit.http.annotation.PostMapping;
 import modelengine.fit.http.annotation.RequestBody;
 import modelengine.fit.http.annotation.RequestMapping;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.validation.Validated;
-
-import jakarta.validation.Valid;
 
 /**
  * 表示评估注解验证数据接口集。

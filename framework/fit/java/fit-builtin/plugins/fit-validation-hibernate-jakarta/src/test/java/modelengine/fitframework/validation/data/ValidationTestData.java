@@ -6,9 +6,14 @@
 
 package modelengine.fitframework.validation.data;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Negative;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 /**
  * 测试用的复杂验证数据类。
@@ -20,7 +25,9 @@ public class ValidationTestData {
 
     // 分组接口定义
     public interface AdvancedGroup {}
+
     public interface StudentGroup {}
+
     public interface TeacherGroup {}
 
     @NotBlank(message = "名称不能为空")

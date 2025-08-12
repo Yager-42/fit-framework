@@ -55,14 +55,14 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 方法参数校验处理
+     * 方法参数校验处理。
      *
-     * @param joinPoint 被拦截的连接点 {@link JoinPoint}
-     * @param validated 连接点上携带的校验注解 {@link Validated}
+     * @param joinPoint 被拦截的连接点 {@link JoinPoint}。
+     * @param validated 连接点上携带的校验注解 {@link Validated}。
      */
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
-        // 检查方法参数是否包含被 jakarta.validation.Constraint 标注的校验注解
+        // 检查方法参数是否包含被 javax.validation.Constraint 标注的校验注解。
         if (hasJavaxConstraintAnnotations(joinPoint.getMethod().getParameters())) {
             ExecutableValidator execVal = this.validator.forExecutables();
             Set<ConstraintViolation<Object>> result = execVal.validateParameters(joinPoint.getTarget(),
@@ -82,65 +82,65 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 检查方法参数是否包含 javax.validation 校验注解
+     * 检查方法参数是否包含 javax.validation 校验注解。
      *
-     * @param parameters 方法参数数组 {@link Parameter[]}
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
+     * @param parameters 方法参数数组 {@link Parameter[]}。
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
      */
     private boolean hasJavaxConstraintAnnotations(Parameter[] parameters) {
-        return Arrays.stream(parameters)
-                .anyMatch(this::hasConstraintAnnotationsInParameter);
+        return Arrays.stream(parameters).anyMatch(this::hasConstraintAnnotationsInParameter);
     }
 
     /**
-     * 检查参数及其泛型类型参数是否包含校验注解
-     * @param parameter 方法参数数组 {@link Parameter}
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
+     * 检查参数及其泛型类型参数是否包含校验注解。
+     *
+     * @param parameter 方法参数数组 {@link Parameter}。
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
      */
     private boolean hasConstraintAnnotationsInParameter(Parameter parameter) {
         return hasConstraintAnnotationsInType(parameter.getAnnotatedType());
     }
 
     /**
-     * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解
-     * @param annotatedType  参数注解类型 {@link AnnotatedType}
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false
+     * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解。
+     *
+     * @param annotatedType 参数注解类型 {@link AnnotatedType}。
+     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
      */
     private boolean hasConstraintAnnotationsInType(AnnotatedType annotatedType) {
-        // 检查当前类型上的注解
+        // 检查当前类型上的注解。
         if (annotatedType.getAnnotations().length > 0) {
             return Arrays.stream(annotatedType.getAnnotations()).anyMatch(this::isJavaxConstraintAnnotation);
         }
-        
-        // 如果是参数化类型，递归检查类型参数
+
+        // 如果是参数化类型，递归检查类型参数。
         if (annotatedType instanceof AnnotatedParameterizedType) {
             AnnotatedParameterizedType parameterizedType = (AnnotatedParameterizedType) annotatedType;
             return Arrays.stream(parameterizedType.getAnnotatedActualTypeArguments())
                     .anyMatch(this::hasConstraintAnnotationsInType);
         }
-        
+
         return false;
     }
 
     /**
-     * 检查注解是否属于 javax.validation 注解
+     * 检查注解是否属于 javax.validation 注解。
      *
-     * @param annotation 要检查的注解 {@link Annotation}
-     * @return 如果属于 javax.validation 注解则返回 true，否则返回 false
+     * @param annotation 要检查的注解 {@link Annotation}。
+     * @return 如果属于 javax.validation 注解则返回 true，否则返回 false {@code boolean}。
      */
     private boolean isJavaxConstraintAnnotation(Annotation annotation) {
-        // @Valid 注解检查
-        if(annotation.annotationType().getName().equals("javax.validation.Valid")){
+        // @Valid 注解检查。
+        if (annotation.annotationType().getName().equals("javax.validation.Valid")) {
             return true;
         }
-        // javax.validation.constraints， org.hibernate.validator.constraints 包下的注解检查
-        // 通过 Constraint 注解检查当前注解是否为校验注解
+        // javax.validation.constraints， org.hibernate.validator.constraints 包下的注解检查。
+        // 通过 Constraint 注解检查当前注解是否为校验注解。
         Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
-        return Arrays.stream(metaAnnotations)
-                .anyMatch(metaAnnotation -> {
-                    String packageName = metaAnnotation.annotationType().getPackage().getName();
-                    String className = metaAnnotation.annotationType().getSimpleName();
-                    return "javax.validation".equals(packageName) && "Constraint".equals(className);
-                });
+        return Arrays.stream(metaAnnotations).anyMatch(metaAnnotation -> {
+            String packageName = metaAnnotation.annotationType().getPackage().getName();
+            String className = metaAnnotation.annotationType().getSimpleName();
+            return "javax.validation".equals(packageName) && "Constraint".equals(className);
+        });
     }
 }

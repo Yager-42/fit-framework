@@ -6,10 +6,9 @@
 
 package modelengine.fitframework.validation.data;
 
-
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 /**
@@ -22,9 +21,9 @@ public class Company {
     @NotNull
     @Valid
     private List<Employee> employees;
-    
+
     public Company() {}
-    
+
     public Company(List<Employee> employees) {
         this.employees = employees;
     }
