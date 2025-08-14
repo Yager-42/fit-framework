@@ -57,8 +57,8 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 方法参数校验处理。
      *
-     * @param joinPoint 被拦截的连接点 {@link JoinPoint}。
-     * @param validated 连接点上携带的校验注解 {@link Validated}。
+     * @param joinPoint 表示切面的切点 {@link JoinPoint}。
+     * @param validated 切点方法所属类的校验注解 {@link Validated}。
      */
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
