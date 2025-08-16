@@ -124,6 +124,9 @@ public class ValidationHandler implements AutoCloseable {
 
     /**
      * 检查注解是否属于 jakarta.validation 注解。
+     * 由于存在嵌套校验的情况， @Valid 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * 1. @Valid 注解检查。如 void validateCompany(@Valid Company company)。
+     * 2. 其他携带 Constraint 注解的校验注解检查。如 void validateEmployee(@NotBlank String name, @Positive int age)。
      *
      * @param annotation 要检查的注解 {@link Annotation}
      * @return 如果属于 jakarta.validation 注解则返回 true，否则返回 false {@code boolean}。
@@ -133,7 +136,7 @@ public class ValidationHandler implements AutoCloseable {
         if ("jakarta.validation.Valid".equals(annotation.annotationType().getName())) {
             return true;
         }
-        // jakarta.validation.constraints， org.hibernate.validator.constraints 包下的注解检查。
+        // 检查 jakarta.validation.constraints， org.hibernate.validator.constraints 包下的注解或者用户根据 jakarta 标准自行实现的注解。
         // 通过 Constraint 注解检查当前注解是否为校验注解。
         Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
         return Arrays.stream(metaAnnotations).anyMatch(metaAnnotation -> {
