@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
+ *  Copyright (c) 2024-2025 Huawei Technologies Co., Ltd. All rights reserved.
  *  This file is a part of the ModelEngine Project.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -12,8 +12,9 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * 员工实体类。
  *
+ * @author 易文渊
  * @author 阮睿
- * @since 2025-07-18
+ * @since 2024-09-27
  */
 public class Employee {
     @NotBlank(message = "姓名不能为空")

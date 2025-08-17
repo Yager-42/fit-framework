@@ -6,6 +6,13 @@
 
 package modelengine.fitframework.validation;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.executable.ExecutableValidator;
+
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.annotation.Scope;
 import modelengine.fitframework.aop.JoinPoint;
@@ -23,13 +30,6 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.executable.ExecutableValidator;
-
 /**
  * 校验入口类。
  * <p>
@@ -45,7 +45,7 @@ public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-    ValidationHandler() {
+    public ValidationHandler() {
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
                 .messageInterpolator(new ParameterMessageInterpolator())
@@ -82,10 +82,10 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 检查方法参数是否包含 javax.validation 校验注解。
+     * 检查方法参数是否包含 {@code javax.validation} 校验注解。
      *
      * @param parameters 方法参数数组 {@link Parameter[]}。
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
+     * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasJavaxConstraintAnnotations(Parameter[] parameters) {
         return Arrays.stream(parameters).anyMatch(this::hasConstraintAnnotationsInParameter);
@@ -95,7 +95,7 @@ public class ValidationHandler implements AutoCloseable {
      * 检查参数及其泛型类型参数是否包含校验注解。
      *
      * @param parameter 方法参数数组 {@link Parameter}。
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
+     * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasConstraintAnnotationsInParameter(Parameter parameter) {
         return hasConstraintAnnotationsInType(parameter.getAnnotatedType());
@@ -105,7 +105,7 @@ public class ValidationHandler implements AutoCloseable {
      * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解。
      *
      * @param annotatedType 参数注解类型 {@link AnnotatedType}。
-     * @return 如果包含 javax.validation 标注的校验注解则返回 true，否则返回 false {@code boolean}。
+     * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasConstraintAnnotationsInType(AnnotatedType annotatedType) {
         // 检查当前类型上的注解。
@@ -124,13 +124,20 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 检查注解是否属于 javax.validation 注解。
-     * 由于存在嵌套校验的情况， @Valid 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
-     * 1. @Valid 注解检查。如 void validateCompany(@Valid Company company)。
-     * 2. 其他在 constraints 包下的注解检查。如 void validateEmployee(@NotBlank String name, @Positive int age)。
+     * <p>
+     * 检查注解是否属于 {@code javax.validation} 注解。
+     * 由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，
+     * 但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * <ol>
+     * <li>{@code @Valid} 注解检查。用于标记需要级联校验的对象，例如：
+     * {@code void validateCompany(@Valid Company company)}。</li>
+     * <li>其他携带 {@code @Constraint} 元注解的校验注解检查。例如：
+     * {@code void validateEmployee(@NotBlank String name, @Positive int age)}。</li>
+     * </ol>
+     * </p>
      *
-     * @param annotation 要检查的注解 {@link Annotation}。
-     * @return 如果属于 javax.validation 注解则返回 true，否则返回 false {@code boolean}。
+     * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}
+     * @return 如果属于 {@code javax.validation} 注解（即 @Valid 或携带 @Constraint），则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean isJavaxConstraintAnnotation(Annotation annotation) {
         // @Valid 注解检查。

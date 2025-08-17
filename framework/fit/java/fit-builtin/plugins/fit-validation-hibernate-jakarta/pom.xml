@@ -20,6 +20,7 @@
         <!-- Third-party versions -->
         <hibernate.version>9.0.1.Final</hibernate.version>
     </properties>
+
     <dependencies>
         <!-- FIT core -->
         <dependency>
@@ -108,5 +109,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

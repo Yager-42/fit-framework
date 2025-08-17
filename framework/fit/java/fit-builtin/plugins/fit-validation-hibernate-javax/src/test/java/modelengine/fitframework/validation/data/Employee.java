@@ -12,8 +12,9 @@ import javax.validation.constraints.NotBlank;
 /**
  * 员工实体类。
  *
+ * @author 易文渊
  * @author 阮睿
- * @since 2025-07-18
+ * @since 2024-09-27
  */
 public class Employee {
     @NotBlank(message = "姓名不能为空")
