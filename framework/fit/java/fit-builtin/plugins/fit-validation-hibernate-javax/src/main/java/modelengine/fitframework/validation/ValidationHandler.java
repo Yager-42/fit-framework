@@ -20,13 +20,13 @@ import modelengine.fitframework.aop.annotation.Before;
 import modelengine.fitframework.ioc.annotation.PreDestroy;
 
 import org.hibernate.validator.HibernateValidator;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -43,14 +43,25 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
+    private LocaleMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
+        this.messageInterpolator = new LocaleMessageInterpolator();
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .messageInterpolator(new ParameterMessageInterpolator())
+                .messageInterpolator(messageInterpolator)
                 .failFast(false)
                 .buildValidatorFactory();
         this.validator = validatorFactory.getValidator();
+    }
+
+    /**
+     * 设置校验信息语言。
+     *
+     * @param locale 校验语言 {@link Locale}。
+     */
+    public void setLocale(Locale locale) {
+        this.messageInterpolator.setLocale(locale);
     }
 
     /**

@@ -50,10 +50,6 @@ import java.util.Map;
  * @since 2025-07-18
  */
 public class ValidationHandlerTest {
-    static {
-        Locale.setDefault(Locale.CHINA);
-    }
-
     private final ValidateService validateService = mock(ValidateService.class);
     private final BeanContainer beanContainer = mock(BeanContainer.class);
     private final FitRuntime fitRuntime = mock(FitRuntime.class);
@@ -63,6 +59,7 @@ public class ValidationHandlerTest {
 
     @BeforeEach
     void setUp() {
+        handler.setLocale(Locale.CHINA);
         when(validated.value()).thenReturn(new Class[0]);
         when(fitRuntime.resolverOfAnnotations()).thenReturn(annotationMetadataResolver);
         when(beanContainer.runtime()).thenReturn(fitRuntime);
