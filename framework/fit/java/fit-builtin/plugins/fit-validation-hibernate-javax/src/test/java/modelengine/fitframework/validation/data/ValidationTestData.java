@@ -52,10 +52,8 @@ public class ValidationTestData {
     @AssertTrue(message = "必须同意条款")
     private Boolean agreed;
 
-    // 构造函数
     public ValidationTestData() {}
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

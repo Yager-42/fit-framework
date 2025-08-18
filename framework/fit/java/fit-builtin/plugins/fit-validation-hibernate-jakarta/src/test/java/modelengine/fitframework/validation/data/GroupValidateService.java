@@ -23,7 +23,7 @@ import modelengine.fitframework.validation.Validated;
 public class GroupValidateService {
     private static final Logger LOG = Logger.get(GroupValidateService.class);
 
-    // 学生年龄验证服务
+    // 学生年龄验证服务。
     @Component
     @Validated(ValidationTestData.StudentGroup.class)
     public static class StudentValidateService {
@@ -35,7 +35,7 @@ public class GroupValidateService {
         }
     }
 
-    // 教师年龄验证服务
+    // 教师年龄验证服务。
     @Component
     @Validated(ValidationTestData.TeacherGroup.class)
     public static class TeacherValidateService {
@@ -47,7 +47,7 @@ public class GroupValidateService {
         }
     }
 
-    // 高级分组验证服务
+    // 高级分组验证服务。
     @Component
     @Validated(ValidationTestData.AdvancedGroup.class)
     public static class AdvancedValidateService {

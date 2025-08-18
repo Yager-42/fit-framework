@@ -83,7 +83,7 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 检查方法参数是否包含 {@code jakarta.validation} 校验注解。
      *
-     * @param parameters 方法参数数组 {@link Parameter[]}。
+     * @param parameters 方法参数数组 {@link Parameter}{@code []}。
      * @return 如果包含 {@code jakarta.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasJakartaConstraintAnnotations(Parameter[] parameters) {
@@ -125,15 +125,13 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * <p>
      * 检查注解是否属于 {@code jakarta.validation} 注解。
-     * 由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，
-     * 但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * <p>
+     * 由于存在嵌套校验的情况， {@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
      * <ol>
-     * <li>{@code @Valid} 注解检查。用于标记需要级联校验的对象，例如：
-     * {@code void validateCompany(@Valid Company company)}。</li>
-     * <li>其他携带 {@code @Constraint} 元注解的校验注解检查。例如：
-     * {@code void validateEmployee(@NotBlank String name, @Positive int age)}。</li>
+     * <li>{@code @Valid} 注解检查。用于标记需要级联校验的对象，例如： {@code void validateCompany(@Valid Company company)}。</li>
+     * <li>其他携带 {@code @Constraint} 元注解的校验注解检查。例如： {@code void validateEmployee(@NotBlank String name, @Positive int
+     * age)}。</li>
      * </ol>
-     * </p>
      *
      * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}
      * @return 如果属于 {@code jakarta.validation} 注解（即 @Valid 或携带 @Constraint），则返回 {@code true}，否则返回 {@code false}。

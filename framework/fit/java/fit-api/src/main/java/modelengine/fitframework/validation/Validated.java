@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
 
 /**
  * 表示校验的注解。
- * <p>用来标识所要校验的类，该类的所有公共方法中，所有被 javax 或 jakarta 校验注解
- * 标注的参数都会被校验
+ * <p>
+ * 用来标识所要校验的类，该类的所有公共方法中，所有被 javax 或 jakarta 校验注解标注的参数都会被校验。
  * </p>
  *
  * @author 邬涨财

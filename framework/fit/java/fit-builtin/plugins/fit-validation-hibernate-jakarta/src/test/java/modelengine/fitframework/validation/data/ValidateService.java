@@ -91,35 +91,35 @@ public class ValidateService {
     /**
      * 测试 NotNull 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testNotNull(@NotNull String value) {}
 
     /**
      * 测试 NotEmpty 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testNotEmpty(@NotEmpty String value) {}
 
     /**
      * 测试 NotBlank 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testNotBlank(@NotBlank String value) {}
 
     /**
      * 测试 Null 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testNull(@Null String value) {}
 
     /**
      * 测试 Size 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testSize(@Size(min = 2, max = 10) String value) {}
 
@@ -147,14 +147,14 @@ public class ValidateService {
     /**
      * 测试 DecimalMin 约束注解。
      *
-     * @param value 表示输入的 {@code BigDecimal}。
+     * @param value 表示输入的 {@link BigDecimal}。
      */
     public void testDecimalMin(@DecimalMin("10.5") BigDecimal value) {}
 
     /**
      * 测试 DecimalMax 约束注解。
      *
-     * @param value 表示输入的 {@code BigDecimal}。
+     * @param value 表示输入的 {@link BigDecimal}。
      */
     public void testDecimalMax(@DecimalMax("100.5") BigDecimal value) {}
 
@@ -189,49 +189,49 @@ public class ValidateService {
     /**
      * 测试 Digits 约束注解。
      *
-     * @param value 表示输入的 {@code BigDecimal}。
+     * @param value 表示输入的 {@link BigDecimal}。
      */
     public void testDigits(@Digits(integer = 3, fraction = 2) BigDecimal value) {}
 
     /**
      * 测试 Past 约束注解。
      *
-     * @param value 表示输入的 {@code LocalDate}。
+     * @param value 表示输入的 {@link LocalDate}。
      */
     public void testPast(@Past LocalDate value) {}
 
     /**
      * 测试 PastOrPresent 约束注解。
      *
-     * @param value 表示输入的 {@code LocalDate}。
+     * @param value 表示输入的 {@link LocalDate}。
      */
     public void testPastOrPresent(@PastOrPresent LocalDate value) {}
 
     /**
      * 测试 Future 约束注解。
      *
-     * @param value 表示输入的 {@code LocalDate}。
+     * @param value 表示输入的 {@link LocalDate}。
      */
     public void testFuture(@Future LocalDate value) {}
 
     /**
      * 测试 FutureOrPresent 约束注解。
      *
-     * @param value 表示输入的 {@code LocalDate}。
+     * @param value 表示输入的 {@link LocalDate}。
      */
     public void testFutureOrPresent(@FutureOrPresent LocalDate value) {}
 
     /**
      * 测试 Pattern 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testPattern(@Pattern(regexp = "^[a-zA-Z]+$") String value) {}
 
     /**
      * 测试 Email 约束注解。
      *
-     * @param value 表示输入的 {@code String}。
+     * @param value 表示输入的 {@link String}。
      */
     public void testEmail(@Email String value) {}
 
@@ -266,7 +266,7 @@ public class ValidateService {
     /**
      * 测试 BigDecimal 类型的Range约束注解。
      *
-     * @param value 表示输入的 {@code BigDecimal}。
+     * @param value 表示输入的 {@link BigDecimal}。
      */
     public void testRangeBigDecimal(@Range(min = 10, max = 100, message = "需要在10和100之间") BigDecimal value) {}
 
@@ -291,7 +291,7 @@ public class ValidateService {
     /**
      * 验证姓名和年龄。
      *
-     * @param name 表示输入的 {@code String}。
+     * @param name 表示输入的 {@link String}。
      * @param age 表示输入的 {@code int}。
      */
     public void validateNameAndAge(@NotBlank String name, @Positive int age) {
@@ -361,7 +361,7 @@ public class ValidateService {
     /**
      * 验证员工映射。
      *
-     * @param employeeMap 表示输入的 {@link Map<String, Employee>}。
+     * @param employeeMap 表示输入的 {@code Map<String, Employee>}。
      */
     public void validateEmployeeMap(@Valid Map<String, Employee> employeeMap) {
         LOG.debug("Validating employee map: {}", employeeMap);
@@ -370,7 +370,7 @@ public class ValidateService {
     /**
      * 验证员工数据映射。
      *
-     * @param map 表示输入的 {@link Map<Employee, ValidationTestData>}。
+     * @param map 表示输入的 {@code Map<Employee, ValidationTestData>}。
      */
     public void validateEmployeeDataMap(@Valid Map<Employee, ValidationTestData> map) {
         LOG.debug("Validating employee data map: {}", map);
@@ -379,7 +379,7 @@ public class ValidateService {
     /**
      * 验证嵌套员工数据映射。
      *
-     * @param nestedMap 表示输入的 {@link Map<Employee, Map<String, ValidationTestData>>}。
+     * @param nestedMap 表示输入的 {@code Map<Employee, Map<String, ValidationTestData>>}。
      */
     public void validateNestedEmployeeDataMap(Map<@Valid Employee, Map<String, @Valid ValidationTestData>> nestedMap) {
         LOG.debug("Validating nested employee data map: {}", nestedMap);
@@ -388,7 +388,7 @@ public class ValidateService {
     /**
      * 验证员工映射列表。
      *
-     * @param listOfMaps 表示输入的 {@link List<Map<String, Employee>>}。
+     * @param listOfMaps 表示输入的 {@code List<Map<String, Employee>>}。
      */
     public void validateEmployeeMapList(List<Map<String, @Valid Employee>> listOfMaps) {
         LOG.debug("Validating employee map list: {}", listOfMaps);
@@ -397,7 +397,7 @@ public class ValidateService {
     /**
      * 验证员工数据列表映射。
      *
-     * @param map 表示输入的 {@link Map<Employee, List<ValidationTestData>>}。
+     * @param map 表示输入的 {@code Map<Employee, List<ValidationTestData>>}。
      */
     public void validateEmployeeDataListMap(Map<@Valid Employee, List<@Valid ValidationTestData>> map) {
         LOG.debug("Validating employee data list map: {}", map);
@@ -406,7 +406,7 @@ public class ValidateService {
     /**
      * 验证公司列表。
      *
-     * @param companies 表示输入的 {@link List<Company>}。
+     * @param companies 表示输入的 {@code List<Company>}。
      */
     public void validateCompanyList(@Valid List<Company> companies) {
         LOG.debug("Validating company list: {}", companies);
