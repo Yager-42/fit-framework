@@ -150,7 +150,7 @@ public class ValidationHandler implements AutoCloseable {
      *     </li>
      * </ol>
      *
-     * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}
+     * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}。
      * @return 如果属于 {@code jakarta.validation} 注解（即 @Valid 或携带 @Constraint），则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean isJakartaConstraintAnnotation(Annotation annotation) {

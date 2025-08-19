@@ -22,7 +22,7 @@ import java.math.BigDecimal;
  * @since 2025-07-18
  */
 public class ValidationTestData {
-    // 分组接口定义
+    // 分组接口定义。
     public interface AdvancedGroup {}
 
     public interface StudentGroup {}

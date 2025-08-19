@@ -30,7 +30,7 @@ public class GroupValidateService {
         /**
          * 验证学生年龄。
          *
-         * @param age 年龄 {@code int}
+         * @param age 年龄 {@code int}。
          */
         public void validateStudentAge(
                 @Min(value = 7, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class) @Max(
@@ -46,7 +46,7 @@ public class GroupValidateService {
         /**
          * 验证教师年龄。
          *
-         * @param age 年龄 {@code int}
+         * @param age 年龄 {@code int}。
          */
         public void validateTeacherAge(
                 @Min(value = 22, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class) @Max(
@@ -63,7 +63,7 @@ public class GroupValidateService {
         /**
          * 验证高级分组数据。
          *
-         * @param data 用于测试复杂对象验证的数据 {@link ValidationTestData}
+         * @param data 用于测试复杂对象验证的数据 {@link ValidationTestData}。
          */
         public void validateAdvancedGroup(@Valid ValidationTestData data) {
             LOG.debug("Validating advanced group data: {}", data);

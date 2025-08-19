@@ -32,7 +32,7 @@ public class Employee {
      * 构造函数。
      *
      * @param name 姓名 {@link String}。
-     * @param age 年龄 {@code int}
+     * @param age 年龄 {@code int}。
      */
     public Employee(String name, int age) {
         this.name = name;

@@ -401,7 +401,8 @@ public class ValidateService {
     /**
      * 验证员工数据列表映射。
      *
-     * @param map 表示输入的 {@link Map}{@code <}{@link Employee}{@code , }{@link List}{@code <}{@link ValidationTestData}{@code >}{}。
+     * @param map 表示输入的
+     * {@link Map}{@code <}{@link Employee}{@code , }{@link List}{@code <}{@link ValidationTestData}{@code >}。
      */
     public void validateEmployeeDataListMap(Map<@Valid Employee, List<@Valid ValidationTestData>> map) {
         LOG.debug("Validating employee data list map: {}", map);
