@@ -94,7 +94,7 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 检查方法参数是否包含 {@code javax.validation} 校验注解。
      *
-     * @param parameters 方法参数数组 {@link Parameter}{@code []}。
+     * @param parameters 表示可能携带校验注解的方法参数数组 {@link Parameter}{@code []}。
      * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasJavaxConstraintAnnotations(Parameter[] parameters) {
@@ -104,7 +104,7 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 检查参数及其泛型类型参数是否包含校验注解。
      *
-     * @param parameter 方法参数数组 {@link Parameter}。
+     * @param parameter 表示可能携带校验注解的方法参数 {@link Parameter}。
      * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasConstraintAnnotationsInParameter(Parameter parameter) {
@@ -112,9 +112,9 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * 判断参数注解类型，解析参数本身注解及其泛型类型参数注解。
+     * 判断参数类型，解析参数本身注解或其泛型类型参数注解。
      *
-     * @param annotatedType 参数注解类型 {@link AnnotatedType}。
+     * @param annotatedType 表示待检查的参数类型 {@link AnnotatedType}。
      * @return 如果包含 {@code javax.validation} 标注的校验注解则返回 {@code true}，否则返回 {@code false}。
      */
     private boolean hasConstraintAnnotationsInType(AnnotatedType annotatedType) {
@@ -135,13 +135,19 @@ public class ValidationHandler implements AutoCloseable {
 
     /**
      * <p>
-     * 检查注解是否属于 {@code javax.validation} 注解。
+     *     检查注解是否属于 {@code jakarta.validation} 注解。
+     * </p>
      * <p>
-     * 由于存在嵌套校验的情况， {@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     *     由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * </p>
      * <ol>
-     * <li>{@code @Valid} 注解检查。用于标记需要级联校验的对象，例如： {@code void validateCompany(@Valid Company company)}。</li>
-     * <li>其他携带 {@code @Constraint} 元注解的校验注解检查。例如： {@code void validateEmployee(@NotBlank String name, @Positive int
-     * age)}。</li>
+     *     <li>
+     *         {@code @Valid} 注解检查。用于标记需要级联校验的对象，例如：{@code void validateCompany(@Valid Company company)}。
+     *     </li>
+     *     <li>
+     *         其他携带 {@code @Constraint} 元注解的校验注解检查。例如：{@code void validateEmployee(@NotBlank String name, @Positive
+     *         int)}。
+     *     </li>
      * </ol>
      *
      * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}
@@ -152,7 +158,7 @@ public class ValidationHandler implements AutoCloseable {
         if (annotation.annotationType().getName().equals("javax.validation.Valid")) {
             return true;
         }
-        // 检查 javax.validation.constraints， org.hibernate.validator.constraints 包下的注解或者用户根据 javax 标准自行实现的注解检查。。
+        // 检查 javax.validation.constraints， org.hibernate.validator.constraints 包下的注解或者用户根据 javax 标准自行实现的注解检查。
         // 通过 Constraint 注解检查当前注解是否为校验注解。
         Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
         return Arrays.stream(metaAnnotations).anyMatch(metaAnnotation -> {

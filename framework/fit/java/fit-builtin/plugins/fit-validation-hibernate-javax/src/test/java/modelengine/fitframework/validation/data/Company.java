@@ -23,8 +23,16 @@ public class Company {
     @Valid
     private List<Employee> employees;
 
+    /**
+     * 默认构造函数。
+     */
     public Company() {}
 
+    /**
+     * 构造函数。
+     *
+     * @param employees 表示雇员列表的 {@link List}{@code <}{@link Employee}{@code >}。
+     */
     public Company(List<Employee> employees) {
         this.employees = employees;
     }

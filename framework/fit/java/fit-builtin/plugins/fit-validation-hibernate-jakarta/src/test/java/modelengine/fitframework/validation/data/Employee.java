@@ -23,8 +23,17 @@ public class Employee {
     @Min(value = 18, message = "年龄必须大于等于18")
     private int age;
 
+    /**
+     * 默认构造函数。
+     */
     public Employee() {}
 
+    /**
+     * 构造函数。
+     *
+     * @param name 姓名 {@link String}。
+     * @param age 年龄 {@code int}
+     */
     public Employee(String name, int age) {
         this.name = name;
         this.age = age;

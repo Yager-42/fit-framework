@@ -127,7 +127,7 @@ public class ValidateService {
     /**
      * 测试 List 的 Size 约束注解。
      *
-     * @param value 表示输入的 {@code List<String>}。
+     * @param value 表示输入的 {@link List}{@code <}{@link String}{@code >}。
      */
     public void testSizeList(@Size(min = 1, max = 3) List<String> value) {}
 
@@ -344,7 +344,7 @@ public class ValidateService {
     /**
      * 验证员工列表。
      *
-     * @param employees 表示输入的 {@link List<Employee>}。
+     * @param employees 表示输入的 {@link List}{@code <}{@link Employee}{@code >}。
      */
     public void validateEmployeeList(List<@Valid Employee> employees) {
         LOG.debug("Validating employee list: {}", employees);
@@ -353,7 +353,7 @@ public class ValidateService {
     /**
      * 验证嵌套员工列表。
      *
-     * @param nestedList 表示输入的 {@link List<List<Employee>>}。
+     * @param nestedList 表示输入的 {@link List}{@code <}{@link List}{@code <}{@link Employee}{@code >}{@code >}}。
      */
     public void validateNestedEmployeeList(List<List<@Valid Employee>> nestedList) {
         LOG.debug("Validating nested employee list: {}", nestedList);
@@ -362,7 +362,7 @@ public class ValidateService {
     /**
      * 验证员工映射。
      *
-     * @param employeeMap 表示输入的 {@code Map<String, Employee>}。
+     * @param employeeMap 表示输入的 {@link  Map}{@code <}{@link String}{@code , }{@link Employee}{@code >}。
      */
     public void validateEmployeeMap(@Valid Map<String, Employee> employeeMap) {
         LOG.debug("Validating employee map: {}", employeeMap);
@@ -371,7 +371,7 @@ public class ValidateService {
     /**
      * 验证员工数据映射。
      *
-     * @param map 表示输入的 {@code Map<Employee, ValidationTestData>}。
+     * @param map 表示输入的 {@link Map}{@code <}{@link Employee}{@code , }{@link ValidationTestData}>。
      */
     public void validateEmployeeDataMap(@Valid Map<Employee, ValidationTestData> map) {
         LOG.debug("Validating employee data map: {}", map);
@@ -380,7 +380,9 @@ public class ValidateService {
     /**
      * 验证嵌套员工数据映射。
      *
-     * @param nestedMap 表示输入的 {@code Map<Employee, Map<String, ValidationTestData>>}。
+     * @param nestedMap 表示输入的
+     * {@link Map}{@code <}{@link Employee}{@code , }{@link Map}{@code <}{@link String}{@code , }{@link
+     * ValidationTestData}{@code >}{@code >}。
      */
     public void validateNestedEmployeeDataMap(Map<@Valid Employee, Map<String, @Valid ValidationTestData>> nestedMap) {
         LOG.debug("Validating nested employee data map: {}", nestedMap);
@@ -389,7 +391,8 @@ public class ValidateService {
     /**
      * 验证员工映射列表。
      *
-     * @param listOfMaps 表示输入的 {@code List<Map<String, Employee>>}。
+     * @param listOfMaps 表示输入的 {@link List}{@code <}{@link Map}{@code <}{@link String}{@code ,
+     * }{@link Employee}{@code >}{@code >}。
      */
     public void validateEmployeeMapList(List<Map<String, @Valid Employee>> listOfMaps) {
         LOG.debug("Validating employee map list: {}", listOfMaps);
@@ -398,7 +401,7 @@ public class ValidateService {
     /**
      * 验证员工数据列表映射。
      *
-     * @param map 表示输入的 {@code Map<Employee, List<ValidationTestData>>}。
+     * @param map 表示输入的 {@link Map}{@code <}{@link Employee}{@code , }{@link List}{@code <}{@link ValidationTestData}{@code >}{}。
      */
     public void validateEmployeeDataListMap(Map<@Valid Employee, List<@Valid ValidationTestData>> map) {
         LOG.debug("Validating employee data list map: {}", map);
@@ -407,7 +410,7 @@ public class ValidateService {
     /**
      * 验证公司列表。
      *
-     * @param companies 表示输入的 {@code List<Company>}。
+     * @param companies 表示输入的 {@link List}{@code <}{@link Company}{@code >}。
      */
     public void validateCompanyList(@Valid List<Company> companies) {
         LOG.debug("Validating company list: {}", companies);
@@ -426,8 +429,8 @@ public class ValidateService {
     /**
      * 验证混合集合数据。
      *
-     * @param list1 表示输入的 {@code List<String>}。
-     * @param list2 表示输入的 {@code List<String>}。
+     * @param list1 表示输入的 {@link List}{@code <}{@link String}{@code >}。
+     * @param list2 表示输入的 {@link List}{@code <}{@link String}{@code >}。
      */
     public void validateMixedCollections(@NotNull List<String> list1, @NotEmpty List<String> list2) {
         LOG.debug("Validating mixed collections: {} and {}", list1, list2);

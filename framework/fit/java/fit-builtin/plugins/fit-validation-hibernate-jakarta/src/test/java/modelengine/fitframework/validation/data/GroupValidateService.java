@@ -23,10 +23,14 @@ import modelengine.fitframework.validation.Validated;
 public class GroupValidateService {
     private static final Logger LOG = Logger.get(GroupValidateService.class);
 
-    // 学生年龄验证服务。
     @Component
     @Validated(ValidationTestData.StudentGroup.class)
     public static class StudentValidateService {
+        /**
+         * 验证学生年龄。
+         *
+         * @param age 年龄 {@code int}
+         */
         public void validateStudentAge(
                 @Min(value = 7, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class) @Max(
                         value = 20, message = "范围要在7~20之内",
@@ -35,10 +39,14 @@ public class GroupValidateService {
         }
     }
 
-    // 教师年龄验证服务。
     @Component
     @Validated(ValidationTestData.TeacherGroup.class)
     public static class TeacherValidateService {
+        /**
+         * 验证教师年龄。
+         *
+         * @param age 年龄 {@code int}
+         */
         public void validateTeacherAge(
                 @Min(value = 22, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class) @Max(
                         value = 65, message = "范围要在22~65之内",
@@ -51,6 +59,11 @@ public class GroupValidateService {
     @Component
     @Validated(ValidationTestData.AdvancedGroup.class)
     public static class AdvancedValidateService {
+        /**
+         * 验证高级分组数据。
+         *
+         * @param data 用于测试复杂对象验证的数据 {@link ValidationTestData}
+         */
         public void validateAdvancedGroup(@Valid ValidationTestData data) {
             LOG.debug("Validating advanced group data: {}", data);
         }

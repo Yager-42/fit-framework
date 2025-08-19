@@ -26,24 +26,43 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
 
     private Locale locale;
 
+    /**
+     * 构造函数，使用指定的目标消息插值器初始化实例。
+     *
+     * @param target 目标消息插值器 {@link MessageInterpolator}。
+     */
     public LocaleMessageInterpolator(MessageInterpolator target) {
         this.target = target;
         this.locale = Locale.getDefault();
     }
 
+    /**
+     * 构造函数，使用指定的地区初始化实例。
+     *
+     * @param locale 指定的地区 {@link Locale}。
+     */
     public LocaleMessageInterpolator(Locale locale) {
         this.locale = locale;
         this.target = new ParameterMessageInterpolator();
     }
 
+    /**
+     * 构造函数，使用指定的目标消息插值器和地区初始化实例。
+     *
+     * @param target 被代理的目标消息插值器 {@link MessageInterpolator}。
+     * @param locale 指示当前消息插值器要使用语言的相关地区 {@link Locale}。
+     */
     public LocaleMessageInterpolator(MessageInterpolator target, Locale locale) {
         this.target = target;
         this.locale = locale;
     }
 
+    /**
+     * 构造函数，使用默认地区初始化实例。
+     */
     public LocaleMessageInterpolator() {
-        locale = Locale.getDefault();
-        target = new ParameterMessageInterpolator();
+        this.locale = Locale.getDefault();
+        this.target = new ParameterMessageInterpolator();
     }
 
     @Override
@@ -56,6 +75,11 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
         return target.interpolate(messageTemplate, context, this.locale);
     }
 
+    /**
+     * 设置地区。
+     *
+     * @param locale 指示当前消息插值器要使用语言的相关地区 {@link Locale}。
+     */
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
