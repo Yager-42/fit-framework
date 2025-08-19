@@ -43,16 +43,16 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private LocaleMessageInterpolator messageInterpolator;
+    private final LocaleMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
-        messageInterpolator = new LocaleMessageInterpolator();
+        this.messageInterpolator = new LocaleMessageInterpolator();
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .messageInterpolator(messageInterpolator)
+                .messageInterpolator(this.messageInterpolator)
                 .failFast(false)
                 .buildValidatorFactory();
-        this.validator = validatorFactory.getValidator();
+        this.validator = this.validatorFactory.getValidator();
     }
 
     /**
@@ -122,21 +122,18 @@ public class ValidationHandler implements AutoCloseable {
         if (Arrays.stream(annotatedType.getAnnotations()).anyMatch(this::isJakartaConstraintAnnotation)) {
             return true;
         }
-
         // 如果是参数化类型，递归检查类型参数。
-        if (annotatedType instanceof AnnotatedParameterizedType) {
-            AnnotatedParameterizedType parameterizedType = (AnnotatedParameterizedType) annotatedType;
+        if (annotatedType instanceof AnnotatedParameterizedType parameterizedType) {
             return Arrays.stream(parameterizedType.getAnnotatedActualTypeArguments())
                     .anyMatch(this::hasConstraintAnnotationsInType);
         }
-
         return false;
     }
 
     /**
      * 检查注解是否属于 {@code jakarta.validation} 注解。
      * <p>
-     *     由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * 由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
      * </p>
      * <ol>
      *     <li>
@@ -149,14 +146,15 @@ public class ValidationHandler implements AutoCloseable {
      * </ol>
      *
      * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}。
-     * @return 如果属于 {@code jakarta.validation} 注解（即 @Valid 或携带 @Constraint），则返回 {@code true}，否则返回 {@code false}。
+     * @return 如果属于 {@code jakarta.validation} 注解（即 {@code @Valid} 或携带 {@code @Constraint}），则返回 {@code true}，否则返回
+     * {@code false}。
      */
     private boolean isJakartaConstraintAnnotation(Annotation annotation) {
         // @Valid 注解检查。
         if ("jakarta.validation.Valid".equals(annotation.annotationType().getName())) {
             return true;
         }
-        // 检查 jakarta.validation.constraints， org.hibernate.validator.constraints 包下的注解或者用户根据 jakarta 标准自行实现的注解。
+        // 检查 jakarta.validation.constraints，org.hibernate.validator.constraints 包下的注解或者用户根据 jakarta 标准自行实现的注解。
         // 通过 Constraint 注解检查当前注解是否为校验注解。
         Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
         return Arrays.stream(metaAnnotations).anyMatch(metaAnnotation -> {

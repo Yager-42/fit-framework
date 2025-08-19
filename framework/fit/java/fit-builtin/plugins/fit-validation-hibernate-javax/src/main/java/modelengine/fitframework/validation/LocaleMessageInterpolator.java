@@ -6,11 +6,11 @@
 
 package modelengine.fitframework.validation;
 
-import javax.validation.MessageInterpolator;
-
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import java.util.Locale;
+
+import javax.validation.MessageInterpolator;
 
 /**
  * 地区消息插值器。
@@ -29,7 +29,7 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
     /**
      * 构造函数，使用指定的目标消息插值器初始化实例。
      *
-     * @param target 目标消息插值器 {@link MessageInterpolator}。
+     * @param target 表示目标消息插值器的 {@link MessageInterpolator}。
      */
     public LocaleMessageInterpolator(MessageInterpolator target) {
         this.target = target;
@@ -39,7 +39,7 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
     /**
      * 构造函数，使用指定的地区初始化实例。
      *
-     * @param locale 指定的地区 {@link Locale}。
+     * @param locale 表示指定地区的 {@link Locale}。
      */
     public LocaleMessageInterpolator(Locale locale) {
         this.locale = locale;
@@ -49,8 +49,8 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
     /**
      * 构造函数，使用指定的目标消息插值器和地区初始化实例。
      *
-     * @param target 被代理的目标消息插值器 {@link MessageInterpolator}。
-     * @param locale 指示当前消息插值器要使用语言的相关地区 {@link Locale}。
+     * @param target 表示被代理的目标消息插值器的 {@link MessageInterpolator}。
+     * @param locale 表示当前消息插值器要使用语言的相关地区的 {@link Locale}。
      */
     public LocaleMessageInterpolator(MessageInterpolator target, Locale locale) {
         this.target = target;
@@ -67,18 +67,18 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context) {
-        return target.interpolate(messageTemplate, context, this.locale);
+        return this.target.interpolate(messageTemplate, context, this.locale);
     }
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
-        return target.interpolate(messageTemplate, context, this.locale);
+        return this.target.interpolate(messageTemplate, context, this.locale);
     }
 
     /**
      * 设置地区。
      *
-     * @param locale 指示当前消息插值器要使用语言的相关地区 {@link Locale}。
+     * @param locale 表示当前消息插值器要使用语言的相关地区的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
         this.locale = locale;

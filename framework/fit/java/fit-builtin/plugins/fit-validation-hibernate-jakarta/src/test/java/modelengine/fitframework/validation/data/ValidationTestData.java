@@ -52,36 +52,70 @@ public class ValidationTestData {
     @AssertTrue(message = "必须同意条款")
     private Boolean agreed;
 
+    /**
+     * 构造函数。
+     */
     public ValidationTestData() {}
 
-    public String getName() {
-        return name;
-    }
-
+    /**
+     * 设置名称。
+     *
+     * @param name 表示名称的 {@link String}。
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 设置年龄。
+     *
+     * @param age 表示年龄的 {@link Integer}。
+     */
     public void setAge(Integer age) {
         this.age = age;
     }
 
+    /**
+     * 设置描述。
+     *
+     * @param description 表示描述的 {@link String}。
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * 设置内容。
+     *
+     * @param content 表示内容的 {@link String}。
+     */
     public void setContent(String content) {
         this.content = content;
     }
 
+    /**
+     * 设置数量。
+     *
+     * @param quantity 表示数量的 {@link Integer}。
+     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * 设置折扣。
+     *
+     * @param discount 表示折扣的 {@link BigDecimal}。
+     */
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
+    /**
+     * 设置是否同意条款。
+     *
+     * @param agreed 表示是否同意条款的 {@link Boolean}。
+     */
     public void setAgreed(Boolean agreed) {
         this.agreed = agreed;
     }

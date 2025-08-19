@@ -6,12 +6,6 @@
 
 package modelengine.fitframework.validation;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.executable.ExecutableValidator;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.annotation.Scope;
 import modelengine.fitframework.aop.JoinPoint;
@@ -29,6 +23,13 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.executable.ExecutableValidator;
+
 /**
  * 校验入口类。
  * <p>
@@ -43,22 +44,22 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private LocaleMessageInterpolator messageInterpolator;
+    private final LocaleMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
         this.messageInterpolator = new LocaleMessageInterpolator();
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .messageInterpolator(messageInterpolator)
+                .messageInterpolator(this.messageInterpolator)
                 .failFast(false)
                 .buildValidatorFactory();
-        this.validator = validatorFactory.getValidator();
+        this.validator = this.validatorFactory.getValidator();
     }
 
     /**
      * 设置校验信息语言。
      *
-     * @param locale 校验语言 {@link Locale}。
+     * @param locale 表示校验语言的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
         this.messageInterpolator.setLocale(locale);
@@ -67,8 +68,8 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 方法参数校验处理。
      *
-     * @param joinPoint 表示切面的切点 {@link JoinPoint}。
-     * @param validated 切点方法所属类的校验注解 {@link Validated}。
+     * @param joinPoint 表示切面切点的 {@link JoinPoint}。
+     * @param validated 表示切点方法所属类的校验注解的 {@link Validated}。
      */
     @Before(value = "@target(validated) && execution(public * *(..))", argNames = "joinPoint, validated")
     private void handle(JoinPoint joinPoint, Validated validated) {
@@ -122,21 +123,18 @@ public class ValidationHandler implements AutoCloseable {
         if (annotatedType.getAnnotations().length > 0) {
             return Arrays.stream(annotatedType.getAnnotations()).anyMatch(this::isJavaxConstraintAnnotation);
         }
-
         // 如果是参数化类型，递归检查类型参数。
-        if (annotatedType instanceof AnnotatedParameterizedType) {
-            AnnotatedParameterizedType parameterizedType = (AnnotatedParameterizedType) annotatedType;
+        if (annotatedType instanceof AnnotatedParameterizedType parameterizedType) {
             return Arrays.stream(parameterizedType.getAnnotatedActualTypeArguments())
                     .anyMatch(this::hasConstraintAnnotationsInType);
         }
-
         return false;
     }
 
     /**
      * 检查注解是否属于 {@code javax.validation} 注解。
      * <p>
-     *     由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
+     * 由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
      * </p>
      * <ol>
      *     <li>
@@ -149,7 +147,8 @@ public class ValidationHandler implements AutoCloseable {
      * </ol>
      *
      * @param annotation 要检查的注解 {@link java.lang.annotation.Annotation}。
-     * @return 如果属于 {@code javax.validation} 注解（即 @Valid 或携带 @Constraint），则返回 {@code true}，否则返回 {@code false}。
+     * @return 如果属于 {@code javax.validation} 注解（即 {@code @Valid} 或携带 {@code @Constraint}），则返回 {@code true}，否则返回
+     * {@code false}。
      */
     private boolean isJavaxConstraintAnnotation(Annotation annotation) {
         // @Valid 注解检查。

@@ -39,6 +39,11 @@ public class Employee {
         this.age = age;
     }
 
+    /**
+     * 获取员工姓名。
+     *
+     * @return 返回员工姓名的 {@link String}。
+     */
     public String getName() {
         return name;
     }

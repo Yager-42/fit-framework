@@ -11,8 +11,6 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import javax.validation.ConstraintViolationException;
-
 import modelengine.fitframework.aop.JoinPoint;
 import modelengine.fitframework.ioc.BeanContainer;
 import modelengine.fitframework.ioc.annotation.AnnotationMetadataResolver;
@@ -22,9 +20,9 @@ import modelengine.fitframework.util.ObjectUtils;
 import modelengine.fitframework.util.ReflectionUtils;
 import modelengine.fitframework.validation.data.Company;
 import modelengine.fitframework.validation.data.Employee;
-import modelengine.fitframework.validation.data.ValidationTestData;
-import modelengine.fitframework.validation.data.ValidateService;
 import modelengine.fitframework.validation.data.GroupValidateService;
+import modelengine.fitframework.validation.data.ValidateService;
+import modelengine.fitframework.validation.data.ValidationTestData;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.validation.ConstraintViolationException;
 
 /**
  * {@link ValidationHandler} 的单元测试。
@@ -353,10 +353,14 @@ public class ValidationHandlerTest {
             when(joinPoint.getMethod()).thenReturn(method);
             when(joinPoint.getArgs()).thenReturn(new Object[] {25});
             when(joinPoint.getTarget()).thenReturn(new GroupValidateService.StudentValidateService());
-            when(validated.value()).thenReturn(new Class[] {ValidationTestData.StudentGroup.class});
+            when(ValidationHandlerTest.this.validated.value()).thenReturn(new Class[] {
+                    ValidationTestData.StudentGroup.class
+            });
 
             InvocationTargetException invocationTargetException = catchThrowableOfType(InvocationTargetException.class,
-                    () -> handleValidatedMethod.invoke(handler, joinPoint, validated));
+                    () -> handleValidatedMethod.invoke(ValidationHandlerTest.this.handler,
+                            joinPoint,
+                            ValidationHandlerTest.this.validated));
 
             ConstraintViolationException exception = ObjectUtils.cast(invocationTargetException.getTargetException());
             assertThat(exception.getMessage()).contains("范围要在7~20之内");
@@ -382,10 +386,14 @@ public class ValidationHandlerTest {
             when(joinPoint.getMethod()).thenReturn(method);
             when(joinPoint.getArgs()).thenReturn(new Object[] {15});
             when(joinPoint.getTarget()).thenReturn(new GroupValidateService.TeacherValidateService());
-            when(validated.value()).thenReturn(new Class[] {ValidationTestData.TeacherGroup.class});
+            when(ValidationHandlerTest.this.validated.value()).thenReturn(new Class[] {
+                    ValidationTestData.TeacherGroup.class
+            });
 
             InvocationTargetException invocationTargetException = catchThrowableOfType(InvocationTargetException.class,
-                    () -> handleValidatedMethod.invoke(handler, joinPoint, validated));
+                    () -> handleValidatedMethod.invoke(ValidationHandlerTest.this.handler,
+                            joinPoint,
+                            ValidationHandlerTest.this.validated));
 
             ConstraintViolationException exception = ObjectUtils.cast(invocationTargetException.getTargetException());
             assertThat(exception.getMessage()).contains("范围要在22~65之内");
@@ -416,10 +424,14 @@ public class ValidationHandlerTest {
 
             when(joinPoint.getArgs()).thenReturn(new Object[] {data});
             when(joinPoint.getTarget()).thenReturn(new GroupValidateService.AdvancedValidateService());
-            when(validated.value()).thenReturn(new Class[] {ValidationTestData.AdvancedGroup.class});
+            when(ValidationHandlerTest.this.validated.value()).thenReturn(new Class[] {
+                    ValidationTestData.AdvancedGroup.class
+            });
 
             InvocationTargetException invocationTargetException = catchThrowableOfType(InvocationTargetException.class,
-                    () -> handleValidatedMethod.invoke(handler, joinPoint, validated));
+                    () -> handleValidatedMethod.invoke(ValidationHandlerTest.this.handler,
+                            joinPoint,
+                            ValidationHandlerTest.this.validated));
 
             ConstraintViolationException exception = ObjectUtils.cast(invocationTargetException.getTargetException());
             assertThat(exception.getMessage()).contains("高级组年龄必须小于等于200");
@@ -576,7 +588,7 @@ public class ValidationHandlerTest {
         invalidData.setAge(-1);
 
         List<ValidationTestData> dataList1 = Arrays.asList(validData, invalidData);
-        List<ValidationTestData> dataList2 = Arrays.asList(validData);
+        List<ValidationTestData> dataList2 = List.of(validData);
 
         Map<Employee, List<ValidationTestData>> map = new HashMap<>();
         map.put(validEmployee, dataList1);
@@ -591,65 +603,65 @@ public class ValidationHandlerTest {
     void shouldReturnMsgWhenValidateListComplex() {
         Method method = ReflectionUtils.getDeclaredMethod(ValidateService.class, "validateCompanyList", List.class);
         Employee invalidEmployee = new Employee("", 17);
-        Company invalidCompany = new Company(Arrays.asList(invalidEmployee));
-        List<Company> companies = Arrays.asList(invalidCompany);
+        Company invalidCompany = new Company(List.of(invalidEmployee));
+        List<Company> companies = List.of(invalidCompany);
 
         ConstraintViolationException exception = invokeHandleMethod(method, new Object[] {companies});
         assertThat(exception).isNotNull();
     }
 
     @Test
-    @DisplayName("测试@NotNull注解-成功场景")
+    @DisplayName("测试 @NotNull 注解 - 成功场景")
     void testNotNullValidationSuccess() {
-        validateService.testNotNull("valid value");
+        this.validateService.testNotNull("valid value");
     }
 
     @Test
-    @DisplayName("测试@Size注解-最小边界值")
+    @DisplayName("测试 @Size 注解 - 最小边界值")
     void testSizeStringValidationMinBoundary() {
-        validateService.testSize("ab"); // 2个字符，最小边界
+        this.validateService.testSize("ab"); // 2个字符，最小边界
     }
 
     @Test
-    @DisplayName("测试@Size注解-最大边界值")
+    @DisplayName("测试 @Size 注解 - 最大边界值")
     void testSizeStringValidationMaxBoundary() {
-        validateService.testSize("abcdefghij"); // 10个字符，最大边界
+        this.validateService.testSize("abcdefghij"); // 10个字符，最大边界
     }
 
     @Test
-    @DisplayName("测试@Min注解-边界值")
+    @DisplayName("测试 @Min 注解 - 边界值")
     void testMinValidationBoundary() {
-        validateService.testMin(10); // 最小值边界
+        this.validateService.testMin(10); // 最小值边界
     }
 
     @Test
-    @DisplayName("测试@Max注解-边界值")
+    @DisplayName("测试 @Max 注解 - 边界值")
     void testMaxValidationBoundary() {
-        validateService.testMax(100); // 最大值边界
+        this.validateService.testMax(100); // 最大值边界
     }
 
     @Test
-    @DisplayName("测试@Positive注解-边界值")
+    @DisplayName("测试 @Positive 注解 - 边界值")
     void testPositiveValidationBoundary() {
-        validateService.testPositive(1); // 最小正数
+        this.validateService.testPositive(1); // 最小正数
     }
 
     @Test
-    @DisplayName("测试@PositiveOrZero注解-零值")
+    @DisplayName("测试 @PositiveOrZero 注解 - 零值")
     void testPositiveOrZeroValidationZero() {
-        validateService.testPositiveOrZero(0); // 零值
+        this.validateService.testPositiveOrZero(0); // 零值
     }
 
     @Test
-    @DisplayName("测试@Past注解-边界值")
+    @DisplayName("测试 @Past 注解 - 边界值")
     void testPastValidationBoundary() {
-        validateService.testPast(LocalDate.now().minusDays(1)); // 昨天
+        this.validateService.testPast(LocalDate.now().minusDays(1)); // 昨天
     }
 
     @Test
-    @DisplayName("测试@Future注解-边界值")
+    @DisplayName("测试 @Future 注解 - 边界值")
     void testFutureValidationBoundary() {
-        validateService.testFuture(LocalDate.now().plusDays(1)); // 明天
+        this.validateService.testFuture(LocalDate.now().plusDays(1)); // 明天
     }
 
     @Test
@@ -664,7 +676,7 @@ public class ValidationHandlerTest {
         validData.setDiscount(new BigDecimal("-5.0"));
         validData.setAgreed(true);
 
-        validateService.testValidObject(validData);
+        this.validateService.testValidObject(validData);
     }
 
     @Test
@@ -692,7 +704,7 @@ public class ValidationHandlerTest {
     }
 
     @Test
-    @DisplayName("测试空集合和null值混合")
+    @DisplayName("测试空集合和 null 值混合")
     void testEmptyCollectionAndNullMixed() {
         Method method = ReflectionUtils.getDeclaredMethod(ValidateService.class,
                 "validateMixedCollections",
@@ -704,7 +716,7 @@ public class ValidationHandlerTest {
     }
 
     @Test
-    @DisplayName("测试@Range注解-最小值验证")
+    @DisplayName("测试 @Range 注解 - 最小值验证")
     void testRangeMinValidation() {
         Method method = ReflectionUtils.getDeclaredMethod(ValidateService.class, "testRange", int.class);
         ConstraintViolationException exception = invokeHandleMethod(method, new Object[] {5});
@@ -712,7 +724,7 @@ public class ValidationHandlerTest {
     }
 
     @Test
-    @DisplayName("测试@Range注解-最大值验证")
+    @DisplayName("测试 @Range 注解 - 最大值验证")
     void testRangeMaxValidation() {
         Method method = ReflectionUtils.getDeclaredMethod(ValidateService.class, "testRange", int.class);
         ConstraintViolationException exception = invokeHandleMethod(method, new Object[] {150});
@@ -720,25 +732,25 @@ public class ValidationHandlerTest {
     }
 
     @Test
-    @DisplayName("测试@Range注解-最小边界值")
+    @DisplayName("测试 @Range 注解 - 最小边界值")
     void testRangeMinBoundary() {
-        validateService.testRange(10); // 最小边界值，应该通过
+        this.validateService.testRange(10); // 最小边界值，应该通过
     }
 
     @Test
-    @DisplayName("测试@Range注解-最大边界值")
+    @DisplayName("测试 @Range 注解 - 最大边界值")
     void testRangeMaxBoundary() {
-        validateService.testRange(100); // 最大边界值，应该通过
+        this.validateService.testRange(100); // 最大边界值，应该通过
     }
 
     @Test
-    @DisplayName("测试@Range注解-中间值")
+    @DisplayName("测试 @Range 注解 - 中间值")
     void testRangeValidValue() {
-        validateService.testRange(50); // 中间值，应该通过
+        this.validateService.testRange(50); // 中间值，应该通过
     }
 
     @Test
-    @DisplayName("测试@Range注解-BigDecimal类型")
+    @DisplayName("测试 @Range 注解 - BigDecimal 类型")
     void testRangeBigDecimalValidation() {
         Method method =
                 ReflectionUtils.getDeclaredMethod(ValidateService.class, "testRangeBigDecimal", BigDecimal.class);
