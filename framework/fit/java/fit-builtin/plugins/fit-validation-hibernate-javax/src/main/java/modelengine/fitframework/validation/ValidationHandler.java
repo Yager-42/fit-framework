@@ -134,9 +134,7 @@ public class ValidationHandler implements AutoCloseable {
     }
 
     /**
-     * <p>
-     *     检查注解是否属于 {@code jakarta.validation} 注解。
-     * </p>
+     * 检查注解是否属于 {@code javax.validation} 注解。
      * <p>
      *     由于存在嵌套校验的情况，{@code @Valid} 与其他校验注解都可以标注参数需要进行校验，但两者的实现与语义上存在差异，处理逻辑不能合并，因此分情况讨论：
      * </p>

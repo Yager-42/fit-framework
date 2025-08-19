@@ -31,8 +31,8 @@ public class Employee {
     /**
      * 构造函数。
      *
-     * @param name 姓名 {@link String}。
-     * @param age 年龄 {@code int}。
+     * @param name 表示姓名的 {@link String}。
+     * @param age 表示年龄的 {@code int}。
      */
     public Employee(String name, int age) {
         this.name = name;

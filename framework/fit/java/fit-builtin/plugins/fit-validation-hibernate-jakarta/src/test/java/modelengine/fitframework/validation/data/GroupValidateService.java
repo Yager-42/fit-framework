@@ -29,7 +29,7 @@ public class GroupValidateService {
         /**
          * 验证学生年龄。
          *
-         * @param age 年龄 {@code int}。
+         * @param age 表示年龄的 {@code int}。
          */
         public void validateStudentAge(
                 @Min(value = 7, message = "范围要在7~20之内", groups = ValidationTestData.StudentGroup.class) @Max(
@@ -45,7 +45,7 @@ public class GroupValidateService {
         /**
          * 验证教师年龄。
          *
-         * @param age 年龄 {@code int}。
+         * @param age 表示年龄的 {@code int}。
          */
         public void validateTeacherAge(
                 @Min(value = 22, message = "范围要在22~65之内", groups = ValidationTestData.TeacherGroup.class) @Max(
