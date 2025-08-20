@@ -67,12 +67,12 @@ public class LocaleMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context) {
-        return target.interpolate(messageTemplate, context, this.locale);
+        return this.target.interpolate(messageTemplate, context, this.locale);
     }
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
-        return target.interpolate(messageTemplate, context, locale);
+        return this.target.interpolate(messageTemplate, context, locale);
     }
 
     /**

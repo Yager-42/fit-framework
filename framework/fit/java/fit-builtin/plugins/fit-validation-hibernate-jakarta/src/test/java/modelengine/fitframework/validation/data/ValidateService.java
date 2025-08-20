@@ -304,8 +304,8 @@ public class ValidateService {
      * @param data 表示输入的 {@link ValidationTestData}。
      */
     public void validateAdvancedGroup(ValidationTestData data) {
-        if (advancedValidateService != null) {
-            advancedValidateService.validateAdvancedGroup(data);
+        if (this.advancedValidateService != null) {
+            this.advancedValidateService.validateAdvancedGroup(data);
         }
     }
 
@@ -315,8 +315,8 @@ public class ValidateService {
      * @param age 表示输入的 {@code int}。
      */
     public void validateStudentAge(int age) {
-        if (studentValidateService != null) {
-            studentValidateService.validateStudentAge(age);
+        if (this.studentValidateService != null) {
+            this.studentValidateService.validateStudentAge(age);
         }
     }
 
@@ -326,8 +326,8 @@ public class ValidateService {
      * @param age 表示输入的 {@code int}。
      */
     public void validateTeacherAge(int age) {
-        if (teacherValidateService != null) {
-            teacherValidateService.validateTeacherAge(age);
+        if (this.teacherValidateService != null) {
+            this.teacherValidateService.validateTeacherAge(age);
         }
     }
 

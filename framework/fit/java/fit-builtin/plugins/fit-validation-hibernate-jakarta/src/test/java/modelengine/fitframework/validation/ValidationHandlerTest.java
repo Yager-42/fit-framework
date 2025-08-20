@@ -341,8 +341,7 @@ public class ValidationHandlerTest {
         public void givenParametersThenGroupValidateHappened() {
             // 测试学生年龄验证 - 现在会抛出异常，因为使用了学生分组
             Method method = ReflectionUtils.getDeclaredMethod(GroupValidateService.StudentValidateService.class,
-                    "validateStudentAge",
-                    int.class);
+                    "validateStudentAge", int.class);
             Method handleValidatedMethod = ReflectionUtils.getDeclaredMethod(ValidationHandler.class,
                     "handle",
                     JoinPoint.class,
@@ -352,10 +351,14 @@ public class ValidationHandlerTest {
             when(joinPoint.getMethod()).thenReturn(method);
             when(joinPoint.getArgs()).thenReturn(new Object[] {25});
             when(joinPoint.getTarget()).thenReturn(new GroupValidateService.StudentValidateService());
-            when(validated.value()).thenReturn(new Class[] {ValidationTestData.StudentGroup.class});
+            when(ValidationHandlerTest.this.validated.value()).thenReturn(new Class[] {
+                    ValidationTestData.StudentGroup.class
+            });
 
             InvocationTargetException invocationTargetException = catchThrowableOfType(InvocationTargetException.class,
-                    () -> handleValidatedMethod.invoke(handler, joinPoint, validated));
+                    () -> handleValidatedMethod.invoke(ValidationHandlerTest.this.handler,
+                            joinPoint,
+                            ValidationHandlerTest.this.validated));
 
             ConstraintViolationException exception = ObjectUtils.cast(invocationTargetException.getTargetException());
             assertThat(exception.getMessage()).contains("范围要在7~20之内");
