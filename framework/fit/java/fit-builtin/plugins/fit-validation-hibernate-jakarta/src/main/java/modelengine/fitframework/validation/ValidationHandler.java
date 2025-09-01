@@ -8,7 +8,6 @@ package modelengine.fitframework.validation;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -44,7 +43,7 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private MessageInterpolator messageInterpolator;
+    private LocaleContextMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
         this.messageInterpolator = new LocaleContextMessageInterpolator();
@@ -62,18 +61,7 @@ public class ValidationHandler implements AutoCloseable {
      * @param locale 表示校验语言的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
-        if (this.messageInterpolator instanceof LocaleMessageInterpolator) {
-            ((LocaleMessageInterpolator) this.messageInterpolator).setLocale(locale);
-        }
-    }
-
-    /**
-     * 设置校验信息消息插值器。
-     *
-     * @param messageInterpolator 表示校验信息消息插值器的 {@link MessageInterpolator}。
-     */
-    public void setMessageInterpolator(MessageInterpolator messageInterpolator) {
-        this.messageInterpolator = messageInterpolator;
+        this.messageInterpolator.setLocale(locale);
     }
 
     /**

@@ -26,6 +26,8 @@ import java.util.Locale;
 public class LocaleContextMessageInterpolator implements MessageInterpolator {
     private final MessageInterpolator targetInterpolator;
 
+    private Locale locale;
+
     /**
      * 构造函数。
      *
@@ -33,6 +35,7 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
      */
     public LocaleContextMessageInterpolator(MessageInterpolator targetInterpolator) {
         this.targetInterpolator = targetInterpolator;
+        this.locale = Locale.getDefault();
     }
 
     /**
@@ -40,11 +43,45 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
      */
     public LocaleContextMessageInterpolator() {
         this.targetInterpolator = new ParameterMessageInterpolator();
+        this.locale = Locale.getDefault();
+    }
+
+    /**
+     * 构造函数。
+     *
+     * @param locale 表示当前设置默认的 {@link Locale}。
+     */
+    public LocaleContextMessageInterpolator(Locale locale) {
+        this.targetInterpolator = new ParameterMessageInterpolator();
+        this.locale = locale;
+    }
+
+    /**
+     * 构造函数。
+     *
+     * @param targetInterpolator 表示目标检验消息处理对象的 {@link MessageInterpolator}。
+     * @param locale 表示当前设置默认的 {@link Locale}。
+     */
+    public LocaleContextMessageInterpolator(MessageInterpolator targetInterpolator, Locale locale) {
+        this.targetInterpolator = targetInterpolator;
+        this.locale = locale;
+    }
+
+    /**
+     * 设置默认的 {@link Locale}。
+     *
+     * @param locale 默认设置的 {@link Locale}。
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     @Override
     public String interpolate(String messageTemplate, Context context) {
-        return this.targetInterpolator.interpolate(messageTemplate, context, LocaleContextHolder.getLocale());
+        if (LocaleContextHolder.getLocale() != null) {
+            return this.targetInterpolator.interpolate(messageTemplate, context, LocaleContextHolder.getLocale());
+        }
+        return this.targetInterpolator.interpolate(messageTemplate, context, this.locale);
     }
 
     @Override

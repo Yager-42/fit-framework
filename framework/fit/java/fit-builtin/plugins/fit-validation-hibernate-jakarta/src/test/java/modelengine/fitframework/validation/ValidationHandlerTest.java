@@ -58,7 +58,6 @@ public class ValidationHandlerTest {
 
     @BeforeEach
     void setUp() {
-        this.handler.setMessageInterpolator(new LocaleMessageInterpolator());
         this.handler.setLocale(Locale.CHINA);
         when(this.validated.value()).thenReturn(new Class[0]);
         when(this.fitRuntime.resolverOfAnnotations()).thenReturn(this.annotationMetadataResolver);

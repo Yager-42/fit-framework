@@ -42,7 +42,7 @@ public class LocaleContextHolder {
      */
     public static Locale getLocale() {
         LocaleContext context = getLocaleContext();
-        return context != null ? context.getLocale() : Locale.getDefault();
+        return context != null ? context.getLocale() : null;
     }
 
     /**
