@@ -15,7 +15,7 @@ import jakarta.validation.MessageInterpolator;
 import java.util.Locale;
 
 /**
- * 检验消息处理包装类。
+ * 检验消息处理的代理类。
  * <p>
  * 从 {@link LocaleContextHolder} 中获取当前线程设置的 {@link Locale} 并委托 {@link MessageInterpolator} 去处理消息。
  * </p>
@@ -24,13 +24,20 @@ import java.util.Locale;
  * @since 2025-07-31
  */
 public class LocaleContextMessageInterpolator implements MessageInterpolator {
-
     private final MessageInterpolator targetInterpolator;
 
+    /**
+     * 构造函数。
+     *
+     * @param targetInterpolator 表示目标检验消息处理对象的 {@link MessageInterpolator}。
+     */
     public LocaleContextMessageInterpolator(MessageInterpolator targetInterpolator) {
         this.targetInterpolator = targetInterpolator;
     }
 
+    /**
+     * 构造函数，默认使用 {@link ParameterMessageInterpolator} 作为目标检验消息处理对象。
+     */
     public LocaleContextMessageInterpolator() {
         this.targetInterpolator = new ParameterMessageInterpolator();
     }

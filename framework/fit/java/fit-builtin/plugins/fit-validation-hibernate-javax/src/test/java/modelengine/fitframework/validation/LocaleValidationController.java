@@ -15,7 +15,7 @@ import modelengine.fit.http.annotation.RequestBody;
 import modelengine.fit.http.annotation.RequestMapping;
 
 /**
- * 地区验证控制器 - 测试ValidationHandler与LocaleContextMessageInterpolator的集成
+ * 用于测试 {@link ValidationHandler} 与 {@link LocaleContextMessageInterpolator} 的集成地区验证控制器。
  *
  * @author 阮睿
  * @since 2025-08-01
@@ -24,13 +24,11 @@ import modelengine.fit.http.annotation.RequestMapping;
 @RequestMapping(path = "/validation/locale", group = "地区验证测试接口")
 @Validated
 public class LocaleValidationController {
-
     /**
-     * 测试验证消息的地区化 - 使用简单参数
+     * 使用简单参数测试验证消息的地区化。
      *
-     * @param company 表示注解验证类 {@link Company}。
+     * @param company 表示注解验证的测试实体类 {@link Company}。
      */
     @PostMapping(path = "/simple", description = "测试简单参数的地区化验证消息")
     public void validateSimpleParam(@RequestBody @Valid Company company) {}
-
 }

@@ -11,13 +11,18 @@ import modelengine.fitframework.annotation.Bean;
 import modelengine.fitframework.annotation.Component;
 
 /**
- * {@link LocaleResolveFilter} 配置类
+ * 表示 {@link LocaleResolveFilter} 的配置类。
  *
  * @author 阮睿
  * @since 2025-08-01
  */
 @Component
 public class localeResolveConfig {
+    /**
+     * 注册一个 {@link LocaleResolveFilter} 的 bean。
+     *
+     * @return 返回一个 {@link LocaleResolveFilter} 的实例。
+     */
     @Bean
     public LocaleResolveFilter localeResolveFilter() {
         return new LocaleResolveFilter();

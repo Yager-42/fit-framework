@@ -26,7 +26,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * {@link LocaleValidationController} 的测试集。
+ * 表示评估国际化校验的测试类。
  *
  * @author 阮睿
  * @since 2025-08-01
@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @MvcTest(classes = {LocaleValidationController.class})
 @DisplayName("测试地区化验证消息功能")
 public class LocaleValidationControllerTest {
-
     @Fit
     private MockMvc mockMvc;
 

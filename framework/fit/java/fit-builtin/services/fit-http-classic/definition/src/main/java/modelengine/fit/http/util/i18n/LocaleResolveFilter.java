@@ -30,11 +30,19 @@ public class LocaleResolveFilter implements HttpServerFilter {
 
     private Scope scope = Scope.GLOBAL;
 
+    /**
+     * 构造函数。
+     *
+     * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
+     */
     public LocaleResolveFilter(LocaleResolver localeResolver) {
         localeResolver = localeResolver;
     }
 
-    public LocaleResolveFilter(){
+    /**
+     * 默认构造函数。
+     */
+    public LocaleResolveFilter() {
         this.localeResolver = new DefualtLocaleResolver();
     }
 
@@ -58,35 +66,29 @@ public class LocaleResolveFilter implements HttpServerFilter {
         return mismatchPatterns;
     }
 
-    /**
-     * 过滤请求，从请求中解析地区值并放入线程上下文和cookie。
-     *
-     * @param request 表示服务器请求 {@link HttpClassicServerRequest}。
-     * @param response 表示服务器响应 {@link HttpClassicServerResponse}。
-     * @param chain 过滤链 {@link HttpServerFilterChain}。
-     */
     @Override
     public void doFilter(HttpClassicServerRequest request, HttpClassicServerResponse response,
             HttpServerFilterChain chain) throws DoHttpServerFilterException {
         try {
-            // 如果参数中带有地区，则直接设置地区
+            // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             String paramLocale = request.queries().first("locale").orElse(null);
             Locale responseLocale = null;
             if (paramLocale != null && !paramLocale.trim().isEmpty()) {
                 responseLocale = Locale.forLanguageTag(paramLocale);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(responseLocale));
             }
-            // 如果参数中不包含地区，则解析
-            else{
-                Locale locale =localeResolver.resolveLocale(request);
+            // 如果参数中不包含地区，则解析请求所带的地区参数。
+            else {
+                Locale locale = localeResolver.resolveLocale(request);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(locale));
             }
 
+            // 继续执行后续过滤器。
             chain.doFilter(request, response);
 
-            // responseLocale是用户期望设置的地区，不受 server 端处理的影响
+            // responseLocale 是用户期望设置的地区，不受 server 端处理的影响。
             localeResolver.setLocale(response, responseLocale);
-        }finally {
+        } finally {
             LocaleContextHolder.clear();
         }
 
