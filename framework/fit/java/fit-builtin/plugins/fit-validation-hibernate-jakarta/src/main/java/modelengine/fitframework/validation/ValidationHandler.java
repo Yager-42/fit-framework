@@ -8,6 +8,7 @@ package modelengine.fitframework.validation;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -43,10 +44,10 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private final LocaleMessageInterpolator messageInterpolator;
+    private MessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
-        this.messageInterpolator = new LocaleMessageInterpolator();
+        this.messageInterpolator = new LocaleContextMessageInterpolator();
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
                 .messageInterpolator(this.messageInterpolator)
@@ -58,10 +59,21 @@ public class ValidationHandler implements AutoCloseable {
     /**
      * 设置校验信息语言。
      *
-     * @param locale 校验语言 {@link Locale}。
+     * @param locale 表示校验语言的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
-        this.messageInterpolator.setLocale(locale);
+        if (this.messageInterpolator instanceof LocaleMessageInterpolator) {
+            ((LocaleMessageInterpolator) this.messageInterpolator).setLocale(locale);
+        }
+    }
+
+    /**
+     * 设置校验信息消息插值器。
+     *
+     * @param messageInterpolator 表示校验信息消息插值器的 {@link MessageInterpolator}。
+     */
+    public void setMessageInterpolator(MessageInterpolator messageInterpolator) {
+        this.messageInterpolator = messageInterpolator;
     }
 
     /**

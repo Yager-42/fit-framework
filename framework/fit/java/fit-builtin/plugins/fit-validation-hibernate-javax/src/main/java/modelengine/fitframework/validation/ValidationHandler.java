@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -44,10 +45,10 @@ import javax.validation.executable.ExecutableValidator;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private final LocaleMessageInterpolator messageInterpolator;
+    private MessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
-        this.messageInterpolator = new LocaleMessageInterpolator();
+        this.messageInterpolator = new LocaleContextMessageInterpolator();
         this.validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()
                 .messageInterpolator(this.messageInterpolator)
@@ -62,7 +63,18 @@ public class ValidationHandler implements AutoCloseable {
      * @param locale 表示校验语言的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
-        this.messageInterpolator.setLocale(locale);
+        if (this.messageInterpolator instanceof LocaleMessageInterpolator) {
+            ((LocaleMessageInterpolator) this.messageInterpolator).setLocale(locale);
+        }
+    }
+
+    /**
+     * 设置校验信息消息插值器。
+     *
+     * @param messageInterpolator 表示校验信息消息插值器的 {@link MessageInterpolator}。
+     */
+    public void setMessageInterpolator(MessageInterpolator messageInterpolator) {
+        this.messageInterpolator = messageInterpolator;
     }
 
     /**

@@ -15,6 +15,7 @@ import modelengine.fitframework.test.domain.mvc.MockMvc;
 import modelengine.fitframework.test.domain.mvc.request.MockMvcRequestBuilders;
 import modelengine.fitframework.test.domain.mvc.request.MockRequestBuilder;
 import modelengine.fitframework.validation.data.Company;
+import modelengine.fitframework.validation.data.LocaleValidationController;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

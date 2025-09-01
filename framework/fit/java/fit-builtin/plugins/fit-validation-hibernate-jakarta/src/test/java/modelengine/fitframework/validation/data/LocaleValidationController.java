@@ -4,12 +4,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-package modelengine.fitframework.validation;
+package modelengine.fitframework.validation.data;
 
 import modelengine.fit.http.annotation.PostMapping;
 import modelengine.fit.http.annotation.RequestBody;
 import modelengine.fit.http.annotation.RequestMapping;
 import modelengine.fitframework.annotation.Component;
+import modelengine.fitframework.validation.LocaleContextMessageInterpolator;
+import modelengine.fitframework.validation.Validated;
+import modelengine.fitframework.validation.ValidationHandler;
 import modelengine.fitframework.validation.data.Company;
 
 import jakarta.validation.Valid;
