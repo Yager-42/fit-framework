@@ -45,6 +45,7 @@
         <module>fit-value-fastjson</module>
         <module>fit-validation-hibernate-jakarta</module>
         <module>fit-validation-hibernate-javax</module>
+        <module>fit-i18n-registry</module>
     </modules>
 
     <dependencyManagement>

@@ -18,6 +18,10 @@ import java.util.Locale;
  * @since 2025-08-01
  */
 public interface LocaleResolver {
+    public static final String DEFAULT_COOKIE_NAME = "locale";
+    public static final int DEFAULT_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+    public static final String DEFAULT_COOKIE_DOMAIN = "/";
+    public static final String DEFAULT_COOKIE_PATH = "/";
 
     /**
      * 解析用户的地区设置。
@@ -34,4 +38,10 @@ public interface LocaleResolver {
      * @param locale 表示要设置的地区 {@link Locale}。
      */
     void setLocale(HttpClassicServerResponse response, Locale locale);
+
+    String getName();
+
+    String getUrlPattern();
+
+    int getPriority();
 }
