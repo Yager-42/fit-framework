@@ -19,10 +19,6 @@ import java.util.Locale;
  * @since 2025-08-01
  */
 public class DefualtLocaleResolver implements LocaleResolver {
-    public static final String DEFAULT_COOKIE_NAME = "locale";
-    public static final int DEFAULT_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
-    public static final String DEFAULT_COOKIE_DOMAIN = "/";
-    public static final String DEFAULT_COOKIE_PATH = "/";
     private String cookieName = DEFAULT_COOKIE_NAME;
     private int cookieMaxAge = DEFAULT_COOKIE_MAX_AGE;
     private String cookieDomain = DEFAULT_COOKIE_DOMAIN;
@@ -63,6 +59,21 @@ public class DefualtLocaleResolver implements LocaleResolver {
         } else {
             response.cookies().add(Cookie.builder().name(cookieName).maxAge(0).build());
         }
+    }
+
+    @Override
+    public String getName() {
+        return "DefualtLocaleResolver";
+    }
+
+    @Override
+    public String getUrlPattern() {
+        return "/**";
+    }
+
+    @Override
+    public int getPriority() {
+        return 0;
     }
 
     /**
