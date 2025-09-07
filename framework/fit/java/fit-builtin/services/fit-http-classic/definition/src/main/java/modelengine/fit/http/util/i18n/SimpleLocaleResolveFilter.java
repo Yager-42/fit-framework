@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * 地区解析过滤器。
+ * 简单地区解析过滤器，只使用一种 {@link LocaleResolver} 进行地区解析，多插件同时配置 {@link SimpleLocaleResolveFilter} 可能会引发不可预知的行为。
  *
  * @author 阮睿
  * @since 2025-08-01
  */
-public class LocaleResolveFilter implements HttpServerFilter {
+public class SimpleLocaleResolveFilter implements HttpServerFilter {
 
     private LocaleResolver localeResolver = null;
 
@@ -35,14 +35,14 @@ public class LocaleResolveFilter implements HttpServerFilter {
      *
      * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
      */
-    public LocaleResolveFilter(LocaleResolver localeResolver) {
+    public SimpleLocaleResolveFilter(LocaleResolver localeResolver) {
         localeResolver = localeResolver;
     }
 
     /**
      * 默认构造函数。
      */
-    public LocaleResolveFilter() {
+    public SimpleLocaleResolveFilter() {
         this.localeResolver = new DefualtLocaleResolver();
     }
 
