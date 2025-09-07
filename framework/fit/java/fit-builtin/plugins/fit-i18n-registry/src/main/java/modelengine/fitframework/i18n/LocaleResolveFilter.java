@@ -1,3 +1,9 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
+ *  This file is a part of the ModelEngine Project.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 package modelengine.fitframework.i18n;
 
 import modelengine.fit.http.server.DoHttpServerFilterException;
@@ -51,12 +57,12 @@ public class LocaleResolveFilter implements HttpServerFilter {
 
     @Override
     public List<String> matchPatterns() {
-        return matchPatterns;
+        return this.matchPatterns;
     }
 
     @Override
     public List<String> mismatchPatterns() {
-        return mismatchPatterns;
+        return this.mismatchPatterns;
     }
 
     @Override
@@ -67,7 +73,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
             String paramLocale = request.queries().first("locale").orElse(null);
             Locale responseLocale = null;
             // 使用责任链解析 locale
-            LocaleResolver localeResolver = localeResolverRegistry.dispatch(request);
+            LocaleResolver localeResolver = this.localeResolverRegistry.dispatch(request);
             if (paramLocale != null && !paramLocale.trim().isEmpty()) {
                 responseLocale = Locale.forLanguageTag(paramLocale);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(responseLocale));
@@ -91,6 +97,6 @@ public class LocaleResolveFilter implements HttpServerFilter {
 
     @Override
     public Scope scope() {
-        return scope;
+        return this.scope;
     }
 }

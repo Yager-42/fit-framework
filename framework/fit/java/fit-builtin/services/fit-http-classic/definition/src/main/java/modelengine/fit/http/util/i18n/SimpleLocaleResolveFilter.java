@@ -21,7 +21,6 @@ import java.util.Locale;
  * @since 2025-08-01
  */
 public class SimpleLocaleResolveFilter implements HttpServerFilter {
-
     private LocaleResolver localeResolver = null;
 
     private List<String> matchPatterns = List.of("/**");
@@ -36,7 +35,7 @@ public class SimpleLocaleResolveFilter implements HttpServerFilter {
      * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
      */
     public SimpleLocaleResolveFilter(LocaleResolver localeResolver) {
-        localeResolver = localeResolver;
+        this.localeResolver = localeResolver;
     }
 
     /**
@@ -58,12 +57,12 @@ public class SimpleLocaleResolveFilter implements HttpServerFilter {
 
     @Override
     public List<String> matchPatterns() {
-        return matchPatterns;
+        return this.matchPatterns;
     }
 
     @Override
     public List<String> mismatchPatterns() {
-        return mismatchPatterns;
+        return this.mismatchPatterns;
     }
 
     @Override
@@ -79,7 +78,7 @@ public class SimpleLocaleResolveFilter implements HttpServerFilter {
             }
             // 如果参数中不包含地区，则解析请求所带的地区参数。
             else {
-                Locale locale = localeResolver.resolveLocale(request);
+                Locale locale = this.localeResolver.resolveLocale(request);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(locale));
             }
 
@@ -87,7 +86,7 @@ public class SimpleLocaleResolveFilter implements HttpServerFilter {
             chain.doFilter(request, response);
 
             // responseLocale 是用户期望设置的地区，不受 server 端处理的影响。
-            localeResolver.setLocale(response, responseLocale);
+            this.localeResolver.setLocale(response, responseLocale);
         } finally {
             LocaleContextHolder.clear();
         }
@@ -96,6 +95,6 @@ public class SimpleLocaleResolveFilter implements HttpServerFilter {
 
     @Override
     public Scope scope() {
-        return scope;
+        return this.scope;
     }
 }

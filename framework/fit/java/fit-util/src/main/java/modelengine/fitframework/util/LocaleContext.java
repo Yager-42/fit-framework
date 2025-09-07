@@ -20,7 +20,7 @@ public class LocaleContext {
     /**
      * 构造函数。
      *
-     * @param locale 地区信息 {@link Locale}。
+     * @param locale 表示要设置地区信息的 {@link Locale}。
      */
     public LocaleContext(Locale locale) {
         this.locale = locale;
@@ -29,9 +29,9 @@ public class LocaleContext {
     /**
      * 获取上下文中的地区信息。
      *
-     * @return 当前上下文中存储的地区信息 {@link Locale}。
+     * @return 表示当前上下文中存储的地区信息的 {@link Locale}。
      */
     public Locale getLocale() {
-        return locale;
+        return this.locale;
     }
 }

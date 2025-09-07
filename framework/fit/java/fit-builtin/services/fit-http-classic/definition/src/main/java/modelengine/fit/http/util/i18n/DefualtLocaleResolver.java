@@ -51,14 +51,14 @@ public class DefualtLocaleResolver implements LocaleResolver {
         if (locale != null) {
             response.cookies()
                     .add(Cookie.builder()
-                            .name(cookieName)
+                            .name(this.cookieName)
                             .value(locale.toLanguageTag())
-                            .maxAge(cookieMaxAge)
-                            .domain(cookieDomain)
-                            .path(cookiePath)
+                            .maxAge(this.cookieMaxAge)
+                            .domain(this.cookieDomain)
+                            .path(this.cookiePath)
                             .build());
         } else {
-            response.cookies().add(Cookie.builder().name(cookieName).maxAge(0).build());
+            response.cookies().add(Cookie.builder().name(this.cookieName).maxAge(0).build());
         }
     }
 
@@ -75,7 +75,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
     /**
      * 设置存储地区信息的 Cookie 名称。
      *
-     * @param cookieName 表示将要设置的 Cookie 名称 {@link String}。
+     * @param cookieName 表示将要设置 Cookie 名称的 {@link String}。
      */
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
