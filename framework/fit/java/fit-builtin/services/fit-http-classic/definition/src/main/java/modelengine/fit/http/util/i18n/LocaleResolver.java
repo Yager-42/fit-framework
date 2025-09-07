@@ -12,7 +12,7 @@ import modelengine.fit.http.server.HttpClassicServerResponse;
 import java.util.Locale;
 
 /**
- * 地区解析器接口，用于从HTTP请求中解析用户的地区设置。
+ * 地区解析器接口，用于从 HTTP 请求中解析用户的地区设置。
  *
  * @author 阮睿
  * @since 2025-08-01
@@ -26,20 +26,30 @@ public interface LocaleResolver {
     /**
      * 解析用户的地区设置。
      *
-     * @param request 表示待解析的HTTP请求 {@link HttpClassicServerRequest}。
-     * @return 表示解析出来的地区信息 {@link Locale}。
+     * @param request 表示待解析 HTTP 请求的 {@link HttpClassicServerRequest}。
+     * @return 表示解析出来地区信息的 {@link Locale}。
      */
     Locale resolveLocale(HttpClassicServerRequest request);
 
     /**
      * 设置地区到返回响应中。
      *
-     * @param response 表示将要设置地区的HTTP响应 {@link HttpClassicServerResponse}。
-     * @param locale 表示要设置的地区 {@link Locale}。
+     * @param response 表示将要设置地区 HTTP 响应的 {@link HttpClassicServerResponse}。
+     * @param locale 表示要设置地区的 {@link Locale}。
      */
     void setLocale(HttpClassicServerResponse response, Locale locale);
 
+    /**
+     * 获取地区解析器的 URL 模式。
+     *
+     * @return 获取地区解析器 URL 模式的 {@link String}。
+     */
     String getUrlPattern();
 
+    /**
+     * 设置地区解析器的 URL 模式。
+     *
+     * @param urlPattern 表示待设置 URL 模式的 {@link String}。
+     */
     void setUrlPattern(String urlPattern);
 }
