@@ -39,16 +39,6 @@
             <artifactId>default-weather-for-static</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.fitframework.example</groupId>
-            <artifactId>other-weather-for-static</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.fitframework.plugin</groupId>
-            <artifactId>fit-i18n-registry</artifactId>
-            <version>${fit.version}</version>
-        </dependency>
     </dependencies>
 
     <build>

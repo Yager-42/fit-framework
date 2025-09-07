@@ -10,7 +10,6 @@ import modelengine.fit.example.Weather;
 import modelengine.fit.http.annotation.GetMapping;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.annotation.Fit;
-import modelengine.fitframework.util.LocaleContextHolder;
 
 /**
  * 表示控制器。
@@ -31,8 +30,8 @@ public class AssistantController {
      *
      * @return 表示天气信息的 {@link String}。
      */
-    @GetMapping(path = "/locale")
+    @GetMapping(path = "/weather")
     public String getWeather() {
-        return LocaleContextHolder.getLocale().getLanguage();
+        return this.weather.get();
     }
 }
