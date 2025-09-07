@@ -10,6 +10,8 @@ import modelengine.fit.http.client.HttpClassicClientResponse;
 import modelengine.fit.http.entity.Entity;
 import modelengine.fit.http.entity.ObjectEntity;
 import modelengine.fitframework.annotation.Fit;
+import modelengine.fitframework.i18n.LocaleResolveFilter;
+import modelengine.fitframework.i18n.LocaleResolverRegistry;
 import modelengine.fitframework.test.annotation.MvcTest;
 import modelengine.fitframework.test.domain.mvc.MockMvc;
 import modelengine.fitframework.test.domain.mvc.request.MockMvcRequestBuilders;
@@ -32,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author 阮睿
  * @since 2025-08-01
  */
-@MvcTest(classes = {LocaleValidationController.class})
+@MvcTest(classes = {LocaleValidationController.class, LocaleResolverRegistry.class, LocaleResolveFilter.class})
 @DisplayName("测试地区化验证消息功能")
 public class LocaleValidationControllerTest {
     @Fit

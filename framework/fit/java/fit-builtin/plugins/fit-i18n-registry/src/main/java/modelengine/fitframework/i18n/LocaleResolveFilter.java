@@ -5,7 +5,6 @@ import modelengine.fit.http.server.HttpClassicServerRequest;
 import modelengine.fit.http.server.HttpClassicServerResponse;
 import modelengine.fit.http.server.HttpServerFilter;
 import modelengine.fit.http.server.HttpServerFilterChain;
-import modelengine.fit.http.util.i18n.DefualtLocaleResolver;
 import modelengine.fit.http.util.i18n.LocaleResolver;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.annotation.Scope;
@@ -23,9 +22,6 @@ import java.util.Locale;
  */
 @Component
 public class LocaleResolveFilter implements HttpServerFilter {
-
-    private LocaleResolver localeResolver = null;
-
     private List<String> matchPatterns = List.of("/**");
 
     private List<String> mismatchPatterns = List.of();
@@ -37,17 +33,10 @@ public class LocaleResolveFilter implements HttpServerFilter {
     /**
      * 构造函数。
      *
-     * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
-     */
-    public LocaleResolveFilter(LocaleResolver localeResolver, LocaleResolverRegistry localeResolverRegistry) {
-        localeResolver = localeResolver;
-    }
-
-    /**
-     * 构造函数。
+     * @param localeResolverRegistry 表示地区解析器注册中心的 {@link LocaleResolverRegistry}。
      */
     public LocaleResolveFilter(LocaleResolverRegistry localeResolverRegistry) {
-        this.localeResolver = new DefualtLocaleResolver();
+        this.localeResolverRegistry = localeResolverRegistry;
     }
 
     @Override
@@ -77,17 +66,15 @@ public class LocaleResolveFilter implements HttpServerFilter {
             // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             String paramLocale = request.queries().first("locale").orElse(null);
             Locale responseLocale = null;
+            // 使用责任链解析 locale
+            LocaleResolver localeResolver = localeResolverRegistry.dispatch(request);
             if (paramLocale != null && !paramLocale.trim().isEmpty()) {
                 responseLocale = Locale.forLanguageTag(paramLocale);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(responseLocale));
             }
             // 如果参数中不包含地区，则解析请求所带的地区参数。
             else {
-                // 使用责任链解析locale
-                Locale locale = this.localeResolverRegistry.resolveLocale(request);
-                if (locale == null) {
-                    locale = this.localeResolver.resolveLocale(request); // fallback
-                }
+                Locale locale = localeResolver.resolveLocale(request);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(locale));
             }
 

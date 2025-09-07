@@ -39,9 +39,7 @@ public interface LocaleResolver {
      */
     void setLocale(HttpClassicServerResponse response, Locale locale);
 
-    String getName();
-
     String getUrlPattern();
 
-    int getPriority();
+    void setUrlPattern(String urlPattern);
 }

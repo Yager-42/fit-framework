@@ -24,6 +24,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
     private String cookieDomain = DEFAULT_COOKIE_DOMAIN;
     private String cookiePath = DEFAULT_COOKIE_PATH;
     private Locale defaultLocale = Locale.getDefault();
+    private String urlPattern = "/**";
 
     @Override
     public Locale resolveLocale(HttpClassicServerRequest request) {
@@ -62,18 +63,13 @@ public class DefualtLocaleResolver implements LocaleResolver {
     }
 
     @Override
-    public String getName() {
-        return "DefualtLocaleResolver";
-    }
-
-    @Override
     public String getUrlPattern() {
-        return "/**";
+        return this.urlPattern;
     }
 
     @Override
-    public int getPriority() {
-        return 0;
+    public void setUrlPattern(String urlPattern) {
+        this.urlPattern = urlPattern;
     }
 
     /**

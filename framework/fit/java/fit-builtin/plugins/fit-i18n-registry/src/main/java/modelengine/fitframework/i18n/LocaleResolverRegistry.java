@@ -1,10 +1,14 @@
 package modelengine.fitframework.i18n;
 
+import static modelengine.fitframework.inspection.Validation.notBlank;
+import static modelengine.fitframework.inspection.Validation.notNull;
+
 import modelengine.fit.http.server.HttpClassicServerRequest;
-import modelengine.fit.http.server.HttpClassicServerResponse;
 import modelengine.fit.http.server.dispatch.MappingTree;
 import modelengine.fit.http.server.dispatch.support.DefaultMappingTree;
+import modelengine.fit.http.util.i18n.DefualtLocaleResolver;
 import modelengine.fit.http.util.i18n.LocaleResolver;
+import modelengine.fit.http.util.i18n.RegisterLocaleResolverException;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.ioc.BeanContainer;
 import modelengine.fitframework.ioc.BeanFactory;
@@ -18,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import modelengine.fitframework.resource.UrlUtils;
 import modelengine.fitframework.util.OptionalUtils;
+import modelengine.fitframework.util.StringUtils;
 import modelengine.fitframework.util.wildcard.PathPattern;
 import modelengine.fitframework.util.wildcard.Pattern;
 
@@ -27,31 +32,48 @@ public class LocaleResolverRegistry implements PluginStartedObserver, PluginStop
 
     // 参考DefaultHttpDispatcher的三层结构
     private final Map<String, LocaleResolver> noPathVariableResolvers = new ConcurrentHashMap<>();
-    private final MappingTree<LocaleResolver> pathVariableResolvers = new DefaultMappingTree<>();
+    private final Map<String, MappingTree<LocaleResolver>> pathVariableResolvers = new ConcurrentHashMap<>();
     private final Map<String, LocaleResolver> wildcardResolvers = new ConcurrentHashMap<>();
 
+    private final LocaleResolver defaultLocaleResolver = new DefualtLocaleResolver();
 
-    public void register(String pluginName, LocaleResolver resolver, String urlPattern) {
-        String pathPattern = MappingTree.convertToMatchedPathPattern(urlPattern);
+    public LocaleResolverRegistry() {
+        // 与 DefaultHttpDispatcher 保持一致，使用 ConcurrentHashMap 提供线程安全。
+        this.pathVariableResolvers.put(DefaultMappingTree.PATH_SEPARATOR, new DefaultMappingTree<>());
+    }
+
+    public void register(LocaleResolver resolver) {
+        notNull(resolver, "The locale resolver cannot be null.");
+        String pathPattern = MappingTree.convertToMatchedPathPattern(resolver.getUrlPattern());
+        notBlank(pathPattern, "The path pattern cannot be blank.");
+        LocaleResolver preResolver;
         if (pathPattern.contains("**")) {
-            wildcardResolvers.put(pathPattern, resolver);
+            preResolver = wildcardResolvers.put(pathPattern, resolver);
         } else if (pathPattern.contains("*")) {
-            pathVariableResolvers.register(pathPattern, resolver);
+            preResolver = pathVariableResolvers.get(DefaultMappingTree.PATH_SEPARATOR)
+                    .register(pathPattern, resolver)
+                    .orElse(null);
+            ;
         } else {
-            noPathVariableResolvers.put(pathPattern, resolver);
+            preResolver = noPathVariableResolvers.put(pathPattern, resolver);
+        }
+        if (preResolver != null) {
+            String message = StringUtils.format("Locale resolver has been registered. [pattern={0}]", pathPattern);
+            throw new RegisterLocaleResolverException(message);
         }
     }
 
-    public void unregister(String pluginName, List<String> urlPatterns) {
-        for (String pattern : urlPatterns) {
-            String pathPattern = MappingTree.convertToMatchedPathPattern(pattern);
-            if (pathPattern.contains("**")) {
-                wildcardResolvers.remove(pathPattern);
-            } else if (pathPattern.contains("*")) {
-                pathVariableResolvers.unregister(pathPattern);
-            } else {
-                noPathVariableResolvers.remove(pathPattern);
-            }
+    public void unregister(LocaleResolver resolver) {
+        notNull(resolver, "The locale resolver cannot be null.");
+        String pathPattern = MappingTree.convertToMatchedPathPattern(resolver.getUrlPattern());
+        notBlank(pathPattern, "The path pattern cannot be blank.");
+        if (pathPattern.contains("**")) {
+            wildcardResolvers.remove(pathPattern);
+        } else if (pathPattern.contains("*")) {
+            pathVariableResolvers.get(DefaultMappingTree.PATH_SEPARATOR).unregister(pathPattern);
+            ;
+        } else {
+            noPathVariableResolvers.remove(pathPattern);
         }
     }
 
@@ -59,8 +81,7 @@ public class LocaleResolverRegistry implements PluginStartedObserver, PluginStop
         String path = UrlUtils.decodePath(request.path());
         return (LocaleResolver) OptionalUtils.get(() -> selectFromNoPathVariableResolvers(path))
                 .orElse(() -> selectFromPathVariableResolvers(path))
-                .orElse(() -> selectFromWildcardResolvers(path))
-                .orElse(null);
+                .orElse(() -> selectFromWildcardResolvers(path)).orDefault(this.defaultLocaleResolver);
     }
 
     private Optional<LocaleResolver> selectFromNoPathVariableResolvers(String path) {
@@ -69,7 +90,7 @@ public class LocaleResolverRegistry implements PluginStartedObserver, PluginStop
     }
 
     private Optional<LocaleResolver> selectFromPathVariableResolvers(String path) {
-        return pathVariableResolvers.search(path);
+        return pathVariableResolvers.get(DefaultMappingTree.PATH_SEPARATOR).search(path);
     }
 
     private Optional<LocaleResolver> selectFromWildcardResolvers(String path) {
@@ -90,7 +111,7 @@ public class LocaleResolverRegistry implements PluginStartedObserver, PluginStop
                 .map(BeanFactory::<LocaleResolver>get)
                 .collect(Collectors.toList());
         for(LocaleResolver localeResolver : localeResolvers) {
-            this.register(localeResolver.getName(),localeResolver,localeResolver.getUrlPattern(),localeResolver.getPriority());
+            this.register(localeResolver);
         }
     }
 
@@ -102,7 +123,7 @@ public class LocaleResolverRegistry implements PluginStartedObserver, PluginStop
                 .map(BeanFactory::<LocaleResolver>get)
                 .collect(Collectors.toList());
         for(LocaleResolver localeResolver : localeResolvers) {
-            this.unregister(localeResolver.getName());
+            this.unregister(localeResolver);
         }
     }
 }
