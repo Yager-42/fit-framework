@@ -27,7 +27,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
 
     @Override
     public Locale resolveLocale(HttpClassicServerRequest request) {
-        // 先解析 Cookie，如果没有则解析 Accept-Language 头
+        // 先解析 Cookie，如果没有则解析 Accept-Language 头。
         String newLocale = request.cookies().get(this.cookieName).map(Cookie::value).orElse(null);
         if (newLocale != null) {
             return Locale.forLanguageTag(newLocale);
@@ -42,7 +42,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
             return Locale.forLanguageTag(acceptLanguage);
         }
 
-        return defaultLocale;
+        return this.defaultLocale;
     }
 
     @Override

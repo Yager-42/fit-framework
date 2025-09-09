@@ -23,7 +23,9 @@ public class LocaleContextHolder {
      * @param localeContext 表示将要存储在当前线程地区上下文的 {@link LocaleContext}。
      */
     public static void setLocaleContext(LocaleContext localeContext) {
-        LOCALE_CONTEXT_HOLDER.set(localeContext);
+        if (localeContext != null) {
+            LOCALE_CONTEXT_HOLDER.set(localeContext);
+        }
     }
 
     /**

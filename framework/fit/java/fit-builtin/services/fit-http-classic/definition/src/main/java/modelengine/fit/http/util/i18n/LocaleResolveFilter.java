@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * 简单地区解析过滤器，只使用一种 {@link LocaleResolver} 进行地区解析，多插件同时配置 {@link LocaleResolveFilter} 可能会引发不可预知的行为。
+ * 地区解析过滤器，使用 {@link LocaleResolver} 进行地区解析。
  *
  * @author 阮睿
  * @since 2025-08-01
@@ -27,7 +27,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
 
     private List<String> mismatchPatterns = List.of();
 
-    private Scope scope = Scope.GLOBAL;
+    private Scope scope = Scope.PLUGIN;
 
     /**
      * 构造函数。
