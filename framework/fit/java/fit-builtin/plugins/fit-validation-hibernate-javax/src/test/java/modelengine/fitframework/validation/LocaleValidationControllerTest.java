@@ -49,7 +49,7 @@ public class LocaleValidationControllerTest {
 
     @Test
     @DisplayName("测试法文地区的验证消息")
-    void shouldReturnChineseValidationMessage() {
+    void shouldReturnFrenchValidationMessage() {
         Company invalidCompany = new Company(null);
 
         MockRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/validation/locale/simple")
