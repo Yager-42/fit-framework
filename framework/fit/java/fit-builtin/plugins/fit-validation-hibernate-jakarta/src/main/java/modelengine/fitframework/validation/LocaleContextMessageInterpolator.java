@@ -6,7 +6,7 @@
 
 package modelengine.fitframework.validation;
 
-import modelengine.fitframework.util.LocaleContextHolder;
+import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
