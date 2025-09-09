@@ -4,45 +4,45 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-package modelengine.fitframework.i18n;
+package modelengine.fit.http.util.i18n;
 
-import modelengine.fit.http.server.DoHttpServerFilterException;
-import modelengine.fit.http.server.HttpClassicServerRequest;
-import modelengine.fit.http.server.HttpClassicServerResponse;
-import modelengine.fit.http.server.HttpServerFilter;
-import modelengine.fit.http.server.HttpServerFilterChain;
-import modelengine.fit.http.util.i18n.LocaleResolver;
-import modelengine.fitframework.annotation.Component;
+import modelengine.fit.http.server.*;
 import modelengine.fitframework.annotation.Scope;
-import modelengine.fitframework.util.LocaleContext;
-import modelengine.fitframework.util.LocaleContextHolder;
+import modelengine.fitframework.util.i18n.LocaleContext;
+import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import java.util.List;
 import java.util.Locale;
 
 /**
- * 地区解析过滤器。
+ * 简单地区解析过滤器，只使用一种 {@link LocaleResolver} 进行地区解析，多插件同时配置 {@link LocaleResolveFilter} 可能会引发不可预知的行为。
  *
  * @author 阮睿
  * @since 2025-08-01
  */
-@Component
 public class LocaleResolveFilter implements HttpServerFilter {
+    private LocaleResolver localeResolver = null;
+
     private List<String> matchPatterns = List.of("/**");
 
     private List<String> mismatchPatterns = List.of();
 
     private Scope scope = Scope.GLOBAL;
 
-    private LocaleResolverRegistry localeResolverRegistry;
-
     /**
      * 构造函数。
      *
-     * @param localeResolverRegistry 表示地区解析器注册中心的 {@link LocaleResolverRegistry}。
+     * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
      */
-    public LocaleResolveFilter(LocaleResolverRegistry localeResolverRegistry) {
-        this.localeResolverRegistry = localeResolverRegistry;
+    public LocaleResolveFilter(LocaleResolver localeResolver) {
+        this.localeResolver = localeResolver;
+    }
+
+    /**
+     * 默认构造函数。
+     */
+    public LocaleResolveFilter() {
+        this.localeResolver = new DefualtLocaleResolver();
     }
 
     @Override
@@ -72,15 +72,13 @@ public class LocaleResolveFilter implements HttpServerFilter {
             // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             String paramLocale = request.queries().first("locale").orElse(null);
             Locale responseLocale = null;
-            // 使用责任链解析 locale
-            LocaleResolver localeResolver = this.localeResolverRegistry.dispatch(request);
             if (paramLocale != null && !paramLocale.trim().isEmpty()) {
                 responseLocale = Locale.forLanguageTag(paramLocale);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(responseLocale));
             }
             // 如果参数中不包含地区，则解析请求所带的地区参数。
             else {
-                Locale locale = localeResolver.resolveLocale(request);
+                Locale locale = this.localeResolver.resolveLocale(request);
                 LocaleContextHolder.setLocaleContext(new LocaleContext(locale));
             }
 
@@ -88,7 +86,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
             chain.doFilter(request, response);
 
             // responseLocale 是用户期望设置的地区，不受 server 端处理的影响。
-            localeResolver.setLocale(response, responseLocale);
+            this.localeResolver.setLocale(response, responseLocale);
         } finally {
             LocaleContextHolder.clear();
         }

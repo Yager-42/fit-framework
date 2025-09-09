@@ -38,18 +38,4 @@ public interface LocaleResolver {
      * @param locale 表示要设置地区的 {@link Locale}。
      */
     void setLocale(HttpClassicServerResponse response, Locale locale);
-
-    /**
-     * 获取地区解析器的 URL 模式。
-     *
-     * @return 获取地区解析器 URL 模式的 {@link String}。
-     */
-    String getUrlPattern();
-
-    /**
-     * 设置地区解析器的 URL 模式。
-     *
-     * @param urlPattern 表示待设置 URL 模式的 {@link String}。
-     */
-    void setUrlPattern(String urlPattern);
 }
