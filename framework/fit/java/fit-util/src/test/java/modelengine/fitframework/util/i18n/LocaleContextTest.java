@@ -25,7 +25,6 @@ public class LocaleContextTest {
     @Nested
     @DisplayName("Test method: constructor and getLocale()")
     class TestConstructorAndGetLocale {
-
         @Test
         @DisplayName("Given locale is zh_CN then return the same locale")
         void givenZhCNThenReturnSameLocale() {

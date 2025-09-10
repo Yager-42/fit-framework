@@ -31,7 +31,6 @@ public class LocaleContextHolderTest {
     @Nested
     @DisplayName("Test method: setLocaleContext and getLocaleContext")
     class TestSetAndGetLocaleContext {
-
         @Test
         @DisplayName("Given locale context with zh_CN then return the same locale context")
         void givenLocaleContextWithZhCNThenReturnSameLocaleContext() {
@@ -59,7 +58,6 @@ public class LocaleContextHolderTest {
     @Nested
     @DisplayName("Test method: getLocale")
     class TestGetLocale {
-
         @Test
         @DisplayName("Given locale context with zh_CN then return zh_CN locale")
         void givenLocaleContextWithZhCNThenReturnZhCNLocale() {
@@ -87,7 +85,6 @@ public class LocaleContextHolderTest {
     @Nested
     @DisplayName("Test method: clear")
     class TestClear {
-
         @Test
         @DisplayName("Given existing locale context then clear it")
         void givenExistingLocaleContextThenClearIt() {
