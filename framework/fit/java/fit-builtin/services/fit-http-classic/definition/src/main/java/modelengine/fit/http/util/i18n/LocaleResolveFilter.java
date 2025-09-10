@@ -8,7 +8,6 @@ package modelengine.fit.http.util.i18n;
 
 import modelengine.fit.http.server.*;
 import modelengine.fitframework.annotation.Scope;
-import modelengine.fitframework.util.i18n.LocaleContext;
 import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import java.util.List;
@@ -74,12 +73,12 @@ public class LocaleResolveFilter implements HttpServerFilter {
             Locale responseLocale = null;
             if (paramLocale != null && !paramLocale.trim().isEmpty()) {
                 responseLocale = Locale.forLanguageTag(paramLocale);
-                LocaleContextHolder.setLocaleContext(new LocaleContext(responseLocale));
+                LocaleContextHolder.setLocale(responseLocale);
             }
             // 如果参数中不包含地区，则解析请求所带的地区参数。
             else {
                 Locale locale = this.localeResolver.resolveLocale(request);
-                LocaleContextHolder.setLocaleContext(new LocaleContext(locale));
+                LocaleContextHolder.setLocale(locale);
             }
 
             // 继续执行后续过滤器。

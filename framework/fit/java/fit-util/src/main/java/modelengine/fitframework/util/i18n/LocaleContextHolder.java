@@ -9,32 +9,23 @@ package modelengine.fitframework.util.i18n;
 import java.util.Locale;
 
 /**
- * 表示存储地区上下文的线程上下文。
+ * 表示存储地区的线程上下文。
  *
  * @author 阮睿
  * @since 2025-08-01
  */
 public class LocaleContextHolder {
-    private static final ThreadLocal<LocaleContext> LOCALE_CONTEXT_HOLDER = new ThreadLocal<>();
+    private static final ThreadLocal<Locale> LOCALE_CONTEXT_HOLDER = new ThreadLocal<>();
 
     /**
      * 设置当前线程的地区上下文。
      *
-     * @param localeContext 表示将要存储在当前线程地区上下文的 {@link LocaleContext}。
+     * @param locale 表示将要存储在当前线程地区上下文的 {@link Locale}。
      */
-    public static void setLocaleContext(LocaleContext localeContext) {
-        if (localeContext != null) {
-            LOCALE_CONTEXT_HOLDER.set(localeContext);
+    public static void setLocale(Locale locale) {
+        if (locale != null) {
+            LOCALE_CONTEXT_HOLDER.set(locale);
         }
-    }
-
-    /**
-     * 获取当前线程的地区上下文。
-     *
-     * @return 表示当前线程地区上下文的 {@link LocaleContext}。
-     */
-    public static LocaleContext getLocaleContext() {
-        return LOCALE_CONTEXT_HOLDER.get();
     }
 
     /**
@@ -43,8 +34,7 @@ public class LocaleContextHolder {
      * @return 表示当前线程上下文存储地区信息的 {@link Locale}。
      */
     public static Locale getLocale() {
-        LocaleContext context = getLocaleContext();
-        return context != null ? context.getLocale() : null;
+        return LOCALE_CONTEXT_HOLDER.get();
     }
 
     /**

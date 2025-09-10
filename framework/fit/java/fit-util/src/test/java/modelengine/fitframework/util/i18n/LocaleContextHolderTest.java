@@ -29,55 +29,28 @@ public class LocaleContextHolderTest {
     }
 
     @Nested
-    @DisplayName("Test method: setLocaleContext and getLocaleContext")
+    @DisplayName("Test method: setLocale and getLocale")
     class TestSetAndGetLocaleContext {
         @Test
-        @DisplayName("Given locale context with zh_CN then return the same locale context")
+        @DisplayName("Given locale with zh_CN then return the same locale")
         void givenLocaleContextWithZhCNThenReturnSameLocaleContext() {
-            LocaleContext localeContext = new LocaleContext(Locale.SIMPLIFIED_CHINESE);
-            LocaleContextHolder.setLocaleContext(localeContext);
-            assertThat(LocaleContextHolder.getLocaleContext()).isEqualTo(localeContext);
+            Locale locale = Locale.SIMPLIFIED_CHINESE;
+            LocaleContextHolder.setLocale(locale);
+            assertThat(LocaleContextHolder.getLocale()).isEqualTo(locale);
         }
 
         @Test
-        @DisplayName("Given locale context with en_US then return the same locale context")
+        @DisplayName("Given locale with en_US then return the same locale")
         void givenLocaleContextWithEnUSThenReturnSameLocaleContext() {
-            LocaleContext localeContext = new LocaleContext(Locale.US);
-            LocaleContextHolder.setLocaleContext(localeContext);
-            assertThat(LocaleContextHolder.getLocaleContext()).isEqualTo(localeContext);
+            Locale locale = Locale.US;
+            LocaleContextHolder.setLocale(locale);
+            assertThat(LocaleContextHolder.getLocale()).isEqualTo(locale);
         }
 
         @Test
-        @DisplayName("Given null locale context then not set and return null")
+        @DisplayName("Given null locale then not set and return null")
         void givenNullLocaleContextThenReturnNull() {
-            LocaleContextHolder.setLocaleContext(null);
-            assertThat(LocaleContextHolder.getLocaleContext()).isNull();
-        }
-    }
-
-    @Nested
-    @DisplayName("Test method: getLocale")
-    class TestGetLocale {
-        @Test
-        @DisplayName("Given locale context with zh_CN then return zh_CN locale")
-        void givenLocaleContextWithZhCNThenReturnZhCNLocale() {
-            LocaleContext localeContext = new LocaleContext(Locale.SIMPLIFIED_CHINESE);
-            LocaleContextHolder.setLocaleContext(localeContext);
-            assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.SIMPLIFIED_CHINESE);
-        }
-
-        @Test
-        @DisplayName("Given locale context with en_US then return en_US locale")
-        void givenLocaleContextWithEnUSThenReturnEnUSLocale() {
-            LocaleContext localeContext = new LocaleContext(Locale.US);
-            LocaleContextHolder.setLocaleContext(localeContext);
-            assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.US);
-        }
-
-        @Test
-        @DisplayName("Given no locale context then return null")
-        void givenNoLocaleContextThenReturnNull() {
-            LocaleContextHolder.clear();
+            LocaleContextHolder.setLocale(null);
             assertThat(LocaleContextHolder.getLocale()).isNull();
         }
     }
@@ -86,14 +59,14 @@ public class LocaleContextHolderTest {
     @DisplayName("Test method: clear")
     class TestClear {
         @Test
-        @DisplayName("Given existing locale context then clear it")
+        @DisplayName("Given existing locale then clear it")
         void givenExistingLocaleContextThenClearIt() {
-            LocaleContext localeContext = new LocaleContext(Locale.SIMPLIFIED_CHINESE);
-            LocaleContextHolder.setLocaleContext(localeContext);
-            assertThat(LocaleContextHolder.getLocaleContext()).isNotNull();
+            Locale locale = Locale.SIMPLIFIED_CHINESE;
+            LocaleContextHolder.setLocale(locale);
+            assertThat(LocaleContextHolder.getLocale()).isNotNull();
 
             LocaleContextHolder.clear();
-            assertThat(LocaleContextHolder.getLocaleContext()).isNull();
+            assertThat(LocaleContextHolder.getLocale()).isNull();
         }
     }
 }
