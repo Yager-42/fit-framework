@@ -9,7 +9,9 @@ package modelengine.fit.http.util.i18n;
 import modelengine.fit.http.Cookie;
 import modelengine.fit.http.server.HttpClassicServerRequest;
 import modelengine.fit.http.server.HttpClassicServerResponse;
+import modelengine.fitframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,16 +31,20 @@ public class DefualtLocaleResolver implements LocaleResolver {
     public Locale resolveLocale(HttpClassicServerRequest request) {
         // 先解析 Cookie，如果没有则解析 Accept-Language 头。
         String newLocale = request.cookies().get(this.cookieName).map(Cookie::value).orElse(null);
-        if (newLocale != null) {
+        if (newLocale != null && StringUtils.isNotBlank(newLocale.trim())) {
             return Locale.forLanguageTag(newLocale);
         }
-        String acceptLanguage;
-        try {
-            acceptLanguage = request.headers().require("Accept-Language");
-        } catch (Exception e) {
-            acceptLanguage = null;
+        String acceptLanguage = null;
+        List<String> acceptLanguages = request.headers().all("Accept-Language");
+
+        for (String language : acceptLanguages) {
+            if (language != null && StringUtils.isNotBlank(language.trim())) {
+                acceptLanguage = language;
+                break;
+            }
         }
-        if (acceptLanguage != null && !acceptLanguage.trim().isEmpty()) {
+
+        if (acceptLanguage != null && StringUtils.isNotBlank(acceptLanguage.trim())) {
             return Locale.forLanguageTag(acceptLanguage);
         }
 
@@ -64,7 +70,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
     /**
      * 设置存储地区信息的 Cookie 名称。
      *
-     * @param cookieName 表示将要设置 Cookie 名称的 {@link String}。
+     * @param cookieName 表示待设置 Cookie 名称的 {@link String}。
      */
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
@@ -73,7 +79,7 @@ public class DefualtLocaleResolver implements LocaleResolver {
     /**
      * 设置存储地区信息的 Cookie 的最大有效期。
      *
-     * @param cookieMaxAge 表示将要设置的 Cookie 最大有效期的 {@code int}。
+     * @param cookieMaxAge 表示待设置的 Cookie 最大有效期的 {@code int}。
      */
     public void setCookieMaxAge(int cookieMaxAge) {
         this.cookieMaxAge = cookieMaxAge;

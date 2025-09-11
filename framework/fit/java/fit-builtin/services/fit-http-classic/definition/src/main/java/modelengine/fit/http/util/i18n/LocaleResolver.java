@@ -19,19 +19,22 @@ import java.util.Locale;
  */
 public interface LocaleResolver {
     /**
-     * 表示要设置 cookie 的名称。
+     * 表示待设置 cookie 的名称。
      */
     public static final String DEFAULT_COOKIE_NAME = "locale";
+
     /**
-     * 表示要设置 cookie 的自动过期时间。
+     * 表示待设置 cookie 的自动过期时间。
      */
     public static final int DEFAULT_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+
     /**
-     * 表示要设置 Cookie 的可见域。
+     * 表示待设置 Cookie 的可见域。
      */
     public static final String DEFAULT_COOKIE_DOMAIN = "/";
+
     /**
-     * 表示要设置 Cookie 的可见 URL 路径。
+     * 表示待设置 Cookie 的可见 URL 路径。
      */
     public static final String DEFAULT_COOKIE_PATH = "/";
 
@@ -46,8 +49,8 @@ public interface LocaleResolver {
     /**
      * 设置地区到返回响应中。
      *
-     * @param response 表示将要设置地区 HTTP 响应的 {@link HttpClassicServerResponse}。
-     * @param locale 表示要设置地区的 {@link Locale}。
+     * @param response 表示待设置地区的 HTTP 响应的 {@link HttpClassicServerResponse}。
+     * @param locale 表示待设置地区的 {@link Locale}。
      */
     void setLocale(HttpClassicServerResponse response, Locale locale);
 }

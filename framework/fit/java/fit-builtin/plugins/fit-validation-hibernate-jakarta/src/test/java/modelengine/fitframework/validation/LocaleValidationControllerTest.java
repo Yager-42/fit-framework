@@ -146,10 +146,3 @@ public class LocaleValidationControllerTest {
         assertThat(this.response.statusCode()).isEqualTo(500);
     }
 }
-
-
-
-
-
-
-

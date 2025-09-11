@@ -20,7 +20,7 @@ public class LocaleContextHolder {
     /**
      * 设置当前线程的地区上下文。
      *
-     * @param locale 表示将要存储在当前线程地区上下文的 {@link Locale}。
+     * @param locale 表示待存储在当前线程地区上下文的 {@link Locale}。
      */
     public static void setLocale(Locale locale) {
         if (locale != null) {
