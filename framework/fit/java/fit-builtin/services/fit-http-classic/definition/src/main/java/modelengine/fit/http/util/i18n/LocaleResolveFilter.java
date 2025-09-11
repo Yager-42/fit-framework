@@ -77,9 +77,8 @@ public class LocaleResolveFilter implements HttpServerFilter {
             // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             if (responseLocale != null) {
                 LocaleContextHolder.setLocale(responseLocale);
-            }
-            // 如果参数中不包含地区，则解析请求所带的地区参数。
-            else {
+            } else {
+                // 如果参数中不包含地区，则解析请求所带的地区参数。
                 Locale locale = this.localeResolver.resolveLocale(request);
                 LocaleContextHolder.setLocale(locale);
             }
