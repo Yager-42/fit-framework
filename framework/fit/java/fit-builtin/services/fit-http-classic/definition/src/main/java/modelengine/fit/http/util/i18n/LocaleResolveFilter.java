@@ -8,11 +8,13 @@ package modelengine.fit.http.util.i18n;
 
 import modelengine.fit.http.server.*;
 import modelengine.fitframework.annotation.Scope;
+import modelengine.fitframework.inspection.Validation;
 import modelengine.fitframework.util.StringUtils;
 import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * 地区解析过滤器，使用 {@link LocaleResolver} 进行地区解析。
@@ -32,7 +34,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
      * @param localeResolver 表示地区解析器的 {@link LocaleResolver}。
      */
     public LocaleResolveFilter(LocaleResolver localeResolver) {
-        this.localeResolver = localeResolver;
+        this.localeResolver = Validation.notNull(localeResolver, "The locale resolver cannot be null.");
     }
 
     /**
@@ -66,14 +68,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
     public void doFilter(HttpClassicServerRequest request, HttpClassicServerResponse response,
             HttpServerFilterChain chain) throws DoHttpServerFilterException {
         try {
-            List<String> paramLocales = request.queries().all("locale");
-            Locale responseLocale = null;
-            for (String paramLocale : paramLocales) {
-                if (StringUtils.isNotBlank(paramLocale.trim())) {
-                    responseLocale = Locale.forLanguageTag(paramLocale);
-                    break;
-                }
-            }
+            Locale responseLocale = Locale.forLanguageTag(this.resolveLocaleFromParam(request));
             // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             if (responseLocale != null) {
                 LocaleContextHolder.setLocale(responseLocale);
@@ -98,5 +93,10 @@ public class LocaleResolveFilter implements HttpServerFilter {
     @Override
     public Scope scope() {
         return this.scope;
+    }
+
+    private String resolveLocaleFromParam(HttpClassicServerRequest request) {
+        Optional<String> paramLocale = request.queries().first("locale");
+        return paramLocale.orElse(null);
     }
 }

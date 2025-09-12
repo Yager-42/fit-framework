@@ -43,7 +43,7 @@ import java.util.Set;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private LocaleContextMessageInterpolator messageInterpolator;
+    private final LocaleContextMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
         this.messageInterpolator = new LocaleContextMessageInterpolator();

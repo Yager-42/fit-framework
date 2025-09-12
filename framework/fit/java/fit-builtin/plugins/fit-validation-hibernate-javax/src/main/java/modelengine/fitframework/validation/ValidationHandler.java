@@ -45,7 +45,7 @@ import javax.validation.executable.ExecutableValidator;
 public class ValidationHandler implements AutoCloseable {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    private LocaleContextMessageInterpolator messageInterpolator;
+    private final LocaleContextMessageInterpolator messageInterpolator;
 
     public ValidationHandler() {
         this.messageInterpolator = new LocaleContextMessageInterpolator();

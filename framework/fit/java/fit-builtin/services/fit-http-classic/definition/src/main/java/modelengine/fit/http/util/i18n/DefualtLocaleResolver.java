@@ -34,16 +34,8 @@ public class DefualtLocaleResolver implements LocaleResolver {
         if (StringUtils.isNotBlank(newLocale.trim())) {
             return Locale.forLanguageTag(newLocale);
         }
-        String acceptLanguage = null;
-        List<String> acceptLanguages = request.headers().all("Accept-Language");
 
-        for (String language : acceptLanguages) {
-            if (StringUtils.isNotBlank(language.trim())) {
-                acceptLanguage = language;
-                break;
-            }
-        }
-
+        String acceptLanguage = request.headers().first("Accept-Language").orElse(null);
         if (StringUtils.isNotBlank(acceptLanguage.trim())) {
             return Locale.forLanguageTag(acceptLanguage);
         }

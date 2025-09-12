@@ -6,6 +6,7 @@
 
 package modelengine.fitframework.validation;
 
+import modelengine.fitframework.util.ObjectUtils;
 import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
@@ -25,7 +26,6 @@ import java.util.Locale;
  */
 public class LocaleContextMessageInterpolator implements MessageInterpolator {
     private final MessageInterpolator targetInterpolator;
-
     private Locale locale;
 
     /**
@@ -53,7 +53,7 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
      */
     public LocaleContextMessageInterpolator(Locale locale) {
         this.targetInterpolator = new ParameterMessageInterpolator();
-        this.locale = locale;
+        this.locale = ObjectUtils.getIfNull(locale, Locale::getDefault);
     }
 
     /**
@@ -64,7 +64,7 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
      */
     public LocaleContextMessageInterpolator(MessageInterpolator targetInterpolator, Locale locale) {
         this.targetInterpolator = targetInterpolator;
-        this.locale = locale;
+        this.locale = ObjectUtils.getIfNull(locale, Locale::getDefault);
     }
 
     /**
@@ -73,7 +73,7 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
      * @param locale 默认设置的 {@link Locale}。
      */
     public void setLocale(Locale locale) {
-        this.locale = locale;
+        this.locale = ObjectUtils.getIfNull(locale, Locale::getDefault);
     }
 
     @Override
