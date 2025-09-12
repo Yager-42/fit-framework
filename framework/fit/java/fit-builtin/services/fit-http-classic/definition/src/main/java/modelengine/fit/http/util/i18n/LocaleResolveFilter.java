@@ -69,7 +69,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
             List<String> paramLocales = request.queries().all("locale");
             Locale responseLocale = null;
             for (String paramLocale : paramLocales) {
-                if (paramLocale != null && StringUtils.isNotBlank(paramLocale.trim())) {
+                if (StringUtils.isNotBlank(paramLocale.trim())) {
                     responseLocale = Locale.forLanguageTag(paramLocale);
                     break;
                 }

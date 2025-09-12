@@ -31,20 +31,20 @@ public class DefualtLocaleResolver implements LocaleResolver {
     public Locale resolveLocale(HttpClassicServerRequest request) {
         // 先解析 Cookie，如果没有则解析 Accept-Language 头。
         String newLocale = request.cookies().get(this.cookieName).map(Cookie::value).orElse(null);
-        if (newLocale != null && StringUtils.isNotBlank(newLocale.trim())) {
+        if (StringUtils.isNotBlank(newLocale.trim())) {
             return Locale.forLanguageTag(newLocale);
         }
         String acceptLanguage = null;
         List<String> acceptLanguages = request.headers().all("Accept-Language");
 
         for (String language : acceptLanguages) {
-            if (language != null && StringUtils.isNotBlank(language.trim())) {
+            if (StringUtils.isNotBlank(language.trim())) {
                 acceptLanguage = language;
                 break;
             }
         }
 
-        if (acceptLanguage != null && StringUtils.isNotBlank(acceptLanguage.trim())) {
+        if (StringUtils.isNotBlank(acceptLanguage.trim())) {
             return Locale.forLanguageTag(acceptLanguage);
         }
 
