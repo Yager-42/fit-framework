@@ -68,7 +68,7 @@ public class LocaleResolveFilter implements HttpServerFilter {
     public void doFilter(HttpClassicServerRequest request, HttpClassicServerResponse response,
             HttpServerFilterChain chain) throws DoHttpServerFilterException {
         try {
-            Locale responseLocale = Locale.forLanguageTag(this.resolveLocaleFromParam(request));
+            Locale responseLocale = this.resolveLocaleFromParam(request);
             // 如果参数中带有地区，说明用户想使用新地区执行后续的操作，直接设置地区。
             if (responseLocale != null) {
                 LocaleContextHolder.setLocale(responseLocale);
@@ -95,8 +95,12 @@ public class LocaleResolveFilter implements HttpServerFilter {
         return this.scope;
     }
 
-    private String resolveLocaleFromParam(HttpClassicServerRequest request) {
+    private Locale resolveLocaleFromParam(HttpClassicServerRequest request) {
         Optional<String> paramLocale = request.queries().first("locale");
-        return paramLocale.orElse(null);
+        String localeString = paramLocale.orElse(null);
+        if (StringUtils.isNotBlank(localeString)) {
+            return Locale.forLanguageTag(localeString);
+        }
+        return null;
     }
 }
