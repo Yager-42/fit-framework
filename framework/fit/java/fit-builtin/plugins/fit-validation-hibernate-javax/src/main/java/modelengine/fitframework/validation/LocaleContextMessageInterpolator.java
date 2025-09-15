@@ -86,6 +86,9 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
+        if (locale == null) {
+            throw new IllegalArgumentException("locale must not be null");
+        }
         return this.targetInterpolator.interpolate(messageTemplate, context, locale);
     }
 }
