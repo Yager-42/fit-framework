@@ -341,7 +341,8 @@ public class ValidationHandlerTest {
         public void givenParametersThenGroupValidateHappened() {
             // 测试学生年龄验证 - 现在会抛出异常，因为使用了学生分组
             Method method = ReflectionUtils.getDeclaredMethod(GroupValidateService.StudentValidateService.class,
-                    "validateStudentAge", int.class);
+                    "validateStudentAge",
+                    int.class);
             Method handleValidatedMethod = ReflectionUtils.getDeclaredMethod(ValidationHandler.class,
                     "handle",
                     JoinPoint.class,

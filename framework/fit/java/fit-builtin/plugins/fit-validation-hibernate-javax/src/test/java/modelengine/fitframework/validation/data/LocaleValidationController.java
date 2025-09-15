@@ -6,16 +6,15 @@
 
 package modelengine.fitframework.validation.data;
 
-import javax.validation.Valid;
-
+import modelengine.fit.http.annotation.PostMapping;
+import modelengine.fit.http.annotation.RequestBody;
+import modelengine.fit.http.annotation.RequestMapping;
 import modelengine.fitframework.annotation.Component;
 import modelengine.fitframework.validation.LocaleContextMessageInterpolator;
 import modelengine.fitframework.validation.Validated;
 import modelengine.fitframework.validation.ValidationHandler;
-import modelengine.fitframework.validation.data.Company;
-import modelengine.fit.http.annotation.PostMapping;
-import modelengine.fit.http.annotation.RequestBody;
-import modelengine.fit.http.annotation.RequestMapping;
+
+import javax.validation.Valid;
 
 /**
  * 用于测试 {@link ValidationHandler} 与 {@link LocaleContextMessageInterpolator} 的集成地区验证控制器。

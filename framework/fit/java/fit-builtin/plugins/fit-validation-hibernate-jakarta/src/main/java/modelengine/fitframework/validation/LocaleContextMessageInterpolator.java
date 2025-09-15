@@ -6,12 +6,12 @@
 
 package modelengine.fitframework.validation;
 
+import jakarta.validation.MessageInterpolator;
+import modelengine.fitframework.inspection.Validation;
 import modelengine.fitframework.util.ObjectUtils;
 import modelengine.fitframework.util.i18n.LocaleContextHolder;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
-
-import jakarta.validation.MessageInterpolator;
 
 import java.util.Locale;
 
@@ -86,9 +86,7 @@ public class LocaleContextMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
-        if (locale == null) {
-            throw new IllegalArgumentException("locale must not be null");
-        }
+        Validation.notNull(locale, "Locale cannot be null.");
         return this.targetInterpolator.interpolate(messageTemplate, context, locale);
     }
 }

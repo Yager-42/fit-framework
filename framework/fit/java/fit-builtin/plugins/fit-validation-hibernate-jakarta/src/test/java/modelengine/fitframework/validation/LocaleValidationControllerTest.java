@@ -6,6 +6,8 @@
 
 package modelengine.fitframework.validation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import modelengine.fit.http.client.HttpClassicClientResponse;
 import modelengine.fit.http.entity.Entity;
 import modelengine.fit.http.entity.ObjectEntity;
@@ -23,8 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 表示评估国际化校验的测试类。
